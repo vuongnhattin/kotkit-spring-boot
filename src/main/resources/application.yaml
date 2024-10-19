@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: Kotkit
+
+  data:
+    mongodb:
+      authentication-database: admin
+      host: localhost
+      port: 27017
+      database: kotkit
