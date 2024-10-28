@@ -2,9 +2,16 @@ spring:
   application:
     name: Kotkit
 
-  data:
-    mongodb:
-      authentication-database: admin
-      host: localhost
-      port: 27017
-      database: kotkit
+  datasource:
+      url: jdbc:mysql://localhost:3307/kotkit
+      username: root
+      password: 123
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+security:
+  jwt:
+    secret-key: ZCQl6X6kQnI8PElWxA547cvvvzZSeRhQAzDe7ZYpOI0=
+    expiration-time: 3600000
