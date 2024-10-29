@@ -3,13 +3,13 @@ spring:
     name: Kotkit
 
   datasource:
-      url: jdbc:mysql://localhost:3307/kotkit
+      url: jdbc:mysql://localhost:3308/kotkit
       username: root
       password: 123
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
 
 security:
   jwt:
