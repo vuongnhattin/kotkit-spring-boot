@@ -42,8 +42,9 @@ public class UserService {
         return getCurrentUser().getId();
     }
 
-    public UserResponse updateUser(int userId, UpdateUserInfoInput input) {
-        Users user = findByUserId(userId);
+    public UserResponse updateCurrentUser(UpdateUserInfoInput input) {
+        int meId = getCurrentUserId();
+        Users user = getUser(meId);
 
         mapper.map(input, user);
         userRepository.save(user);
@@ -55,7 +56,7 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
 
-    public Users findByUserId(int userId) {
+    public Users getUser(int userId) {
         return userRepository.findById(userId).orElseThrow(() -> new AppException(404, USER_NOT_FOUND));
     }
 
@@ -67,7 +68,7 @@ public class UserService {
     }
 
     public UserResponse getUserResponse(int userId) {
-        Users users = findByUserId(userId);
+        Users users = getUser(userId);
 
         return mapper.map(users, UserResponse.class);
     }

@@ -8,12 +8,14 @@ import com.example.kotkit.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
     @Operation(summary = "Get user details")
     @GetMapping("users/{userId}")
@@ -25,7 +27,7 @@ public class UserController {
     @PutMapping("me/info")
     public DataResponse<UserResponse> updateInfo(@RequestBody @Valid UpdateUserInfoInput input) {
         int meId = userService.getCurrentUserId();
-        return new DataResponse<>(userService.updateUser(meId, input));
+        return new DataResponse<>(userService.updateCurrentUser(input));
     }
 
     @Operation(summary = "Get user information on profile page")
