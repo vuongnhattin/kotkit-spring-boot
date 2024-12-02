@@ -1,7 +1,7 @@
 package com.example.kotkit.controller;
 
-import com.example.kotkit.dto.request.LoginRequest;
-import com.example.kotkit.dto.request.RegisterRequest;
+import com.example.kotkit.dto.input.LoginInput;
+import com.example.kotkit.dto.input.RegisterInput;
 import com.example.kotkit.dto.response.LoginResponse;
 import com.example.kotkit.entity.Users;
 import com.example.kotkit.service.AuthService;
@@ -24,13 +24,13 @@ public class AuthController {
 
     @Operation(summary = "Register a new user")
     @PostMapping("register")
-    public Users register(@RequestBody @Valid RegisterRequest registerUserDto) {
+    public Users register(@RequestBody @Valid RegisterInput registerUserDto) {
         return authenticationService.register(registerUserDto);
     }
 
     @Operation(summary = "Login to the system")
     @PostMapping("login")
-    public LoginResponse login(@RequestBody @Valid LoginRequest loginUserDto) {
+    public LoginResponse login(@RequestBody @Valid LoginInput loginUserDto) {
         Users authenticatedUser = authenticationService.login(loginUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);

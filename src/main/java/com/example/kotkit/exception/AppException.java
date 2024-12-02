@@ -8,5 +8,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class AppException extends RuntimeException {
     private int status;
-    private String message;
+    private String code;
 }

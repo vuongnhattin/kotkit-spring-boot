@@ -1,4 +1,4 @@
-package com.example.kotkit.dto.request;
+package com.example.kotkit.dto.input;
 
 import lombok.*;
 
@@ -6,7 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LoginRequest {
+public class LoginInput {
     private String username;
     private String password;
 }

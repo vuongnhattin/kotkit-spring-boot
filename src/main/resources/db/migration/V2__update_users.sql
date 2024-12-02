@@ -1,0 +1,1 @@
+alter table users change fullName full_name varchar(255) not null;

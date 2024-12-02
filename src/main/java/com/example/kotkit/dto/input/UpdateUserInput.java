@@ -1,4 +1,4 @@
-package com.example.kotkit.dto.request;
+package com.example.kotkit.dto.input;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdateUserRequest {
+public class UpdateUserInput {
     @NotBlank
     private String fullName;
 }

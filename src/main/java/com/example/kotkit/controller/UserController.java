@@ -2,48 +2,21 @@ package com.example.kotkit.controller;
 
 import com.example.kotkit.dto.response.DataResponse;
 import com.example.kotkit.dto.response.UserResponse;
+import com.example.kotkit.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
-    @Operation(summary = "Search users by name or username (all over tiktok)")
-    @GetMapping("users")
-    public DataResponse<List<UserResponse>> getUsers(@RequestParam(value = "q") String query) {
-        return null;
-    }
+    private final UserService userService;
 
-    @Operation(summary = "Search friends of a friend by name or username")
-    @GetMapping("friends/{friendId}/friends")
-    public DataResponse<List<UserResponse>> getFriendsOfFriend(@PathVariable int friendId, @RequestParam(value = "q") String query) {
-        return null;
-    }
-
-    @Operation(summary = "Send friend request to a user")
-    @PutMapping("send-friend-request")
-    public DataResponse<UserResponse> sendFriendRequest(@RequestParam int userId) {
-        return null;
-    }
-
-    @Operation(summary = "Accept friend request from a user")
-    @PutMapping("accept-friend-request")
-    public DataResponse<UserResponse> acceptFriendRequest(@RequestParam int userId) {
-        return null;
-    }
-
-    @Operation(summary = "Reject friend request from a user")
-    @PutMapping("reject-friend-request")
-    public DataResponse<UserResponse> rejectFriendRequest(@RequestParam int userId) {
-        return null;
-    }
-
-    @Operation(summary = "Unfriend a user")
-    @PutMapping("unfriend")
-    public DataResponse<UserResponse> unfriend(@RequestParam int userId) {
-        return null;
+    @Operation(summary = "Get user details")
+    @GetMapping("users/{userId}")
+    public DataResponse<UserResponse> getUser(@PathVariable int userId) {
+        return new DataResponse<>(userService.getUser(userId));
     }
 }

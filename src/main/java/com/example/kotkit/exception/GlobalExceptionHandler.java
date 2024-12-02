@@ -1,6 +1,6 @@
 package com.example.kotkit.exception;
 
-import com.example.kotkit.dto.response.ErrorResponse;
+import com.example.kotkit.dto.response.DataResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,15 +20,15 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleException(Exception ex) {
+    public DataResponse handleException(Exception ex) {
         log.error(ex.getMessage(), ex);
-        return new ErrorResponse(500,"Internal Server Error");
+        return new DataResponse(null, 500, "INTERNAL_SERVER_ERROR");
     }
 
     @ExceptionHandler(AppException.class)
-    public ResponseEntity<ErrorResponse> handleAppException(AppException e) {
-        ErrorResponse errorResponse = new ErrorResponse(e.getStatus(), e.getMessage());
-        return ResponseEntity.status(e.getStatus()).body(errorResponse);
+    public ResponseEntity<DataResponse> handleAppException(AppException e) {
+        DataResponse response = new DataResponse(null, e.getStatus(), e.getCode());
+        return ResponseEntity.status(e.getStatus()).body(response);
     }
 
     // Handle error when validation failed
@@ -47,14 +47,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBadCredentialsException(BadCredentialsException ex) {
-        return new ErrorResponse(400, "Invalid username or password");
+    public DataResponse handleBadCredentialsException(BadCredentialsException ex) {
+        return new DataResponse(null, 400, "BAD_CREDENTIALS");
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorResponse handleExpiredJwtException(ExpiredJwtException ex) {
-        return new ErrorResponse(401, "Token expired");
+    public DataResponse handleExpiredJwtException(ExpiredJwtException ex) {
+        return new DataResponse(null, 401, "TOKEN_EXPIRED");
     }
 }
 
