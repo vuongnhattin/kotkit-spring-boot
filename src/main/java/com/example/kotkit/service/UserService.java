@@ -1,12 +1,12 @@
 package com.example.kotkit.service;
 
-import com.example.kotkit.dto.input.UpdateUserInput;
+import com.example.kotkit.dto.input.UpdateUserInfoInput;
 import com.example.kotkit.dto.response.UserResponse;
 import com.example.kotkit.entity.Users;
 import com.example.kotkit.exception.AppException;
 import com.example.kotkit.repository.FriendshipRepository;
 import com.example.kotkit.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,9 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
-
     public static final String USER_NOT_FOUND = "USER_NOT_FOUND";
     private final UserRepository userRepository;
     private final FriendshipRepository friendshipRepository;
@@ -36,12 +35,17 @@ public class UserService {
         return (Users) authentication.getPrincipal();
     }
 
-    public Users updateUser(String username, UpdateUserInput input) {
-        Users user = findByUsername(username);
+    public int getCurrentUserId() {
+        return getCurrentUser().getId();
+    }
+
+    public UserResponse updateUser(int userId, UpdateUserInfoInput input) {
+        Users user = findByUserId(userId);
 
         mapper.map(input, user);
+        userRepository.save(user);
 
-        return userRepository.save(user);
+        return mapper.map(user, UserResponse.class);
     }
 
     public boolean existsByUsername(String username) {
@@ -59,7 +63,7 @@ public class UserService {
         return userRepository.searchUsers(query);
     }
 
-    public UserResponse getUser(int userId) {
+    public UserResponse getUserResponse(int userId) {
         Users users = findByUserId(userId);
 
         return mapper.map(users, UserResponse.class);
