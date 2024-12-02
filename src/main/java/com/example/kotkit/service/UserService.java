@@ -1,8 +1,11 @@
 package com.example.kotkit.service;
 
 import com.example.kotkit.dto.input.UpdateUserInfoInput;
+import com.example.kotkit.dto.response.UserProfileResponse;
 import com.example.kotkit.dto.response.UserResponse;
+import com.example.kotkit.entity.Friendship;
 import com.example.kotkit.entity.Users;
+import com.example.kotkit.entity.enums.FriendshipStatus;
 import com.example.kotkit.exception.AppException;
 import com.example.kotkit.repository.FriendshipRepository;
 import com.example.kotkit.repository.UserRepository;
@@ -67,5 +70,16 @@ public class UserService {
         Users users = findByUserId(userId);
 
         return mapper.map(users, UserResponse.class);
+    }
+
+    public UserProfileResponse getUserProfile(int userId) {
+        UserResponse user = getUserResponse(userId);
+
+        int numberOfFriends = friendshipRepository.countNumberOfFriends(userId);
+
+        Friendship friendship = friendshipRepository.findFriendship(getCurrentUser().getId(), userId).orElse(null);
+        FriendshipStatus friendshipStatus = friendship == null ? null : friendship.getStatus();
+
+        return new UserProfileResponse(user, numberOfFriends, friendshipStatus);
     }
 }

@@ -16,7 +16,7 @@ public class FriendController {
     private final FriendshipService friendshipService;
 
     @Operation(summary = "Search users by name or username along with the friend status with them")
-    @GetMapping("users")
+    @GetMapping("users/with-friend-status")
     public DataResponse<List<FriendResponse>> getUsers(@RequestParam(value = "q") @Nullable String query) {
         return new DataResponse<>(friendshipService.getUsersWithFriendStatus(query));
     }

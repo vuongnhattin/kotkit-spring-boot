@@ -1,7 +1,10 @@
 package com.example.kotkit.dto.input;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -14,4 +17,6 @@ public class RegisterInput {
     private String password;
     @NotBlank
     private String fullName;
+    @NotNull
+    private LocalDate birthday;
 }

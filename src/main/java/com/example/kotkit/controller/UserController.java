@@ -2,6 +2,7 @@ package com.example.kotkit.controller;
 
 import com.example.kotkit.dto.input.UpdateUserInfoInput;
 import com.example.kotkit.dto.response.DataResponse;
+import com.example.kotkit.dto.response.UserProfileResponse;
 import com.example.kotkit.dto.response.UserResponse;
 import com.example.kotkit.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,5 +26,11 @@ public class UserController {
     public DataResponse<UserResponse> updateInfo(@RequestBody @Valid UpdateUserInfoInput input) {
         int meId = userService.getCurrentUserId();
         return new DataResponse<>(userService.updateUser(meId, input));
+    }
+
+    @Operation(summary = "Get user information on profile page")
+    @GetMapping("users/{userId}/profile")
+    public DataResponse<UserProfileResponse> getUserProfile(@PathVariable int userId) {
+        return new DataResponse<>(userService.getUserProfile(userId));
     }
 }
