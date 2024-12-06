@@ -1,49 +1,38 @@
 package com.example.kotkit.controller;
 
+import com.example.kotkit.dto.input.UpdateUserInfoInput;
 import com.example.kotkit.dto.response.DataResponse;
+import com.example.kotkit.dto.response.UserProfileResponse;
 import com.example.kotkit.dto.response.UserResponse;
+import com.example.kotkit.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.AllArgsConstructor;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
-    @Operation(summary = "Search users by name or username (all over tiktok)")
-    @GetMapping("users")
-    public DataResponse<List<UserResponse>> getUsers(@RequestParam(value = "q") String query) {
-        return null;
+    private final UserService userService;
+    private final ModelMapper modelMapper;
+
+    @Operation(summary = "Get user details")
+    @GetMapping("users/{userId}")
+    public DataResponse<UserResponse> getUser(@PathVariable int userId) {
+        return new DataResponse<>(userService.getUserResponse(userId));
     }
 
-    @Operation(summary = "Search friends of a friend by name or username")
-    @GetMapping("friends/{friendId}/friends")
-    public DataResponse<List<UserResponse>> getFriendsOfFriend(@PathVariable int friendId, @RequestParam(value = "q") String query) {
-        return null;
+    @Operation(summary = "Update info of current user")
+    @PutMapping("me/info")
+    public DataResponse<UserResponse> updateInfo(@RequestBody @Valid UpdateUserInfoInput input) {
+        int meId = userService.getCurrentUserId();
+        return new DataResponse<>(userService.updateCurrentUser(input));
     }
 
-    @Operation(summary = "Send friend request to a user")
-    @PutMapping("send-friend-request")
-    public DataResponse<UserResponse> sendFriendRequest(@RequestParam int userId) {
-        return null;
-    }
-
-    @Operation(summary = "Accept friend request from a user")
-    @PutMapping("accept-friend-request")
-    public DataResponse<UserResponse> acceptFriendRequest(@RequestParam int userId) {
-        return null;
-    }
-
-    @Operation(summary = "Reject friend request from a user")
-    @PutMapping("reject-friend-request")
-    public DataResponse<UserResponse> rejectFriendRequest(@RequestParam int userId) {
-        return null;
-    }
-
-    @Operation(summary = "Unfriend a user")
-    @PutMapping("unfriend")
-    public DataResponse<UserResponse> unfriend(@RequestParam int userId) {
-        return null;
+    @Operation(summary = "Get user information on profile page")
+    @GetMapping("users/{userId}/profile")
+    public DataResponse<UserProfileResponse> getUserProfile(@PathVariable int userId) {
+        return new DataResponse<>(userService.getUserProfile(userId));
     }
 }

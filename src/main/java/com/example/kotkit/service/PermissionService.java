@@ -1,9 +1,12 @@
 package com.example.kotkit.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service("perm")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PermissionService {
+    private final FriendshipService friendshipService;
+    private final UserService userService;
+
 }

@@ -1,7 +1,6 @@
 package com.example.kotkit.config;
 
-import com.example.kotkit.exception.AppException;
-import com.example.kotkit.repository.UserRepository;
+import com.example.kotkit.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,17 +11,14 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static com.example.kotkit.service.UserService.USER_NOT_FOUND;
-
 @Configuration
 @AllArgsConstructor
 public class ApplicationConfig {
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Bean
     UserDetailsService userDetailsService() {
-        return username -> userRepository.findByUsername(username)
-                .orElseThrow(() -> new AppException(404, USER_NOT_FOUND));
+        return userService::findByUsername;
     }
 
     @Bean

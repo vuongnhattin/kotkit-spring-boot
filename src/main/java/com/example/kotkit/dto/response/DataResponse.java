@@ -10,7 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class DataResponse<T> {
-    T data;
-    String message;
-    Integer statusCode;
+    T data = null;
+    Integer status = 200;
+    String code = "SUCCESS";
+
+    public DataResponse(T data) {
+        this.data = data;
+    }
 }
