@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class VideoResponse {
     @JsonUnwrapped
     Video video;
-    UserResponse creator;
+    UserInfoResponse creator;
 }

@@ -1,8 +1,6 @@
 package com.example.kotkit.service;
 
-import com.example.kotkit.dto.response.UserResponse;
 import com.example.kotkit.dto.response.VideoResponse;
-import com.example.kotkit.entity.Video;
 import com.example.kotkit.entity.enums.VideoVisibility;
 import com.example.kotkit.exception.AppException;
 import com.example.kotkit.repository.VideoRepository;
@@ -19,9 +17,9 @@ public class VideoService {
     private final FriendshipService friendshipService;
 
     public List<VideoResponse> getVideos(int creatorId, String visibility) {
-        List<Video> videos;
+        List<VideoResponse> videos;
         if (visibility.equals(VideoVisibility.PRIVATE.toString())) {
-            int meId = userService.getCurrentUserId();
+            int meId = userService.getMeId();
 
             if (meId == creatorId || friendshipService.isFriend(meId, creatorId)) {
                 videos = videoRepository.getPrivateVideos(creatorId);
@@ -33,11 +31,6 @@ public class VideoService {
             videos = videoRepository.getPublicVideos(creatorId);
         }
 
-        return videos.stream()
-                .map(video -> {
-                    UserResponse user = userService.getUserResponse(video.getCreatorId());
-                    return new VideoResponse(video, user);
-                })
-                .toList();
+        return videos;
     }
 }

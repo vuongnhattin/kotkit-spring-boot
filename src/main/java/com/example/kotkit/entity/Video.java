@@ -20,7 +20,7 @@ public class Video {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
-    private String video;
+    private String videoUrl;
     private String thumbnail;
     private Integer numberOfLikes;
     private Integer numberOfComments;

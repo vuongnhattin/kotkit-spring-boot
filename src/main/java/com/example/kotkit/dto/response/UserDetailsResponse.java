@@ -13,10 +13,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserProfileResponse {
+public class UserDetailsResponse {
     @JsonUnwrapped
-    private UserResponse user;
-    private Integer numberOfFriends;
+    UserInfoResponse user;
+
+    private Long numberOfFriends;
     @Enumerated(EnumType.STRING)
-    private FriendshipStatus friendStatus;
+    FriendshipStatus friendStatus;
 }

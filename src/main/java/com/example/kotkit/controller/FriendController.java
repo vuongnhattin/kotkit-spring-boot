@@ -1,10 +1,9 @@
 package com.example.kotkit.controller;
 
 import com.example.kotkit.dto.response.DataResponse;
-import com.example.kotkit.dto.response.FriendResponse;
+import com.example.kotkit.dto.response.UserDetailsResponse;
 import com.example.kotkit.service.FriendshipService;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,15 +14,9 @@ import java.util.List;
 public class FriendController {
     private final FriendshipService friendshipService;
 
-    @Operation(summary = "Search users by name or username along with the friend status with them")
-    @GetMapping("users/with-friend-status")
-    public DataResponse<List<FriendResponse>> getUsers(@RequestParam(value = "q") @Nullable String query) {
-        return new DataResponse<>(friendshipService.getUsersWithFriendStatus(query));
-    }
-
     @Operation(summary = "Get all friends of a user")
     @GetMapping("users/{userId}/friends")
-    public DataResponse<List<FriendResponse>> getFriendsOfFriend(@PathVariable int userId) {
+    public DataResponse<List<UserDetailsResponse>> getFriendsOfFriend(@PathVariable int userId) {
         return new DataResponse<>(friendshipService.getFriendsOfUser(userId));
     }
 
@@ -62,9 +55,5 @@ public class FriendController {
         return new DataResponse();
     }
 
-    @Operation(summary = "Count number of friends of a user")
-    @GetMapping("count-friends")
-    public DataResponse<Integer> countFriends(@RequestParam("userId") int userId) {
-        return new DataResponse<>(friendshipService.getNumberOfFriends(userId));
-    }
+
 }

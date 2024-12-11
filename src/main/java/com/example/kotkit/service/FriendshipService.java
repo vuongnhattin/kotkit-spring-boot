@@ -1,9 +1,7 @@
 package com.example.kotkit.service;
 
-import com.example.kotkit.dto.response.FriendResponse;
-import com.example.kotkit.dto.response.UserResponse;
+import com.example.kotkit.dto.response.UserDetailsResponse;
 import com.example.kotkit.entity.Friendship;
-import com.example.kotkit.entity.Users;
 import com.example.kotkit.entity.enums.FriendshipStatus;
 import com.example.kotkit.exception.AppException;
 import com.example.kotkit.repository.FriendshipRepository;
@@ -22,35 +20,8 @@ public class FriendshipService {
     private final UserService userService;
     private final ModelMapper mapper;
 
-    public List<FriendResponse> getUsersWithFriendStatus(String query) {
-        int meId = userService.getCurrentUserId();
-        List<Users> users = userService.searchUsers(query);
-
-        return users.stream()
-//                .filter(user -> user.getId() != meId)
-                .map(user -> {
-                    Friendship friendship = friendshipRepository.findFriendship(meId, user.getId()).orElse(null);
-                    UserResponse userResponse = mapper.map(user, UserResponse.class);
-                    return FriendResponse.builder()
-                            .friend(userResponse)
-                            .friendStatus(friendship == null ? null : friendship.getStatus())
-                            .build();
-                }).toList();
-    }
-
-    public List<FriendResponse> getFriendsOfUser(int userId) {
-        List<Friendship> friends = friendshipRepository.getFriendsOfUser(userId);
-        int meId = userService.getCurrentUserId();
-
-        return friends.stream().map(friendship -> {
-            UserResponse user = userService.getUserResponse(friendship.getUser2Id());
-            Friendship friendship1 = friendshipRepository.findFriendship(meId, user.getId()).orElse(null);
-
-            return FriendResponse.builder()
-                    .friend(user)
-                    .friendStatus(friendship1 == null ? null : friendship1.getStatus())
-                    .build();
-        }).toList();
+    public List<UserDetailsResponse> getFriendsOfUser(int userId) {
+        return friendshipRepository.findFriendsOfUser(userId, userService.getMeId());
     }
 
     public boolean existsFriendship(int user1Id, int user2Id) {
@@ -59,7 +30,7 @@ public class FriendshipService {
     }
 
     public void sendFriendRequest(int userId) {
-        int meId = userService.getCurrentUserId();
+        int meId = userService.getMeId();
 
         if (meId == userId || existsFriendship(meId, userId)) {
             throw new AppException(400, FRIENDSHIP_FAILED);
@@ -83,7 +54,7 @@ public class FriendshipService {
     }
 
     public void acceptFriendRequest(int userId) {
-        int meId = userService.getCurrentUserId();
+        int meId = userService.getMeId();
 
         if (!existsFriendship(userId, meId)) {
             throw new AppException(400, FRIENDSHIP_FAILED);
@@ -104,7 +75,7 @@ public class FriendshipService {
     }
 
     public void rejectFriendRequest(int userId) {
-        int meId = userService.getCurrentUserId();
+        int meId = userService.getMeId();
 
         if (meId == userId || !existsFriendship(userId, meId)) {
             throw new AppException(400, FRIENDSHIP_FAILED);
@@ -122,7 +93,7 @@ public class FriendshipService {
     }
 
     public void takeBackFriendRequest(int userId) {
-        int meId = userService.getCurrentUserId();
+        int meId = userService.getMeId();
 
         if (meId == userId || !existsFriendship(meId, userId)) {
             throw new AppException(400, FRIENDSHIP_FAILED);
@@ -140,7 +111,7 @@ public class FriendshipService {
     }
 
     public void unfriend(int userId) {
-        int meId = userService.getCurrentUserId();
+        int meId = userService.getMeId();
 
         if (meId == userId || !existsFriendship(meId, userId)) {
             throw new AppException(400, FRIENDSHIP_FAILED);
@@ -155,10 +126,6 @@ public class FriendshipService {
 
         friendshipRepository.delete(friendship1);
         friendshipRepository.delete(friendship2);
-    }
-
-    public int getNumberOfFriends(int userId) {
-        return friendshipRepository.countNumberOfFriends(userId);
     }
 
     public boolean isFriend(int user1Id, int user2Id) {

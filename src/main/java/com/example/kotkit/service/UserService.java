@@ -1,13 +1,10 @@
 package com.example.kotkit.service;
 
 import com.example.kotkit.dto.input.UpdateUserInfoInput;
-import com.example.kotkit.dto.response.UserProfileResponse;
-import com.example.kotkit.dto.response.UserResponse;
-import com.example.kotkit.entity.Friendship;
+import com.example.kotkit.dto.response.UserDetailsResponse;
+import com.example.kotkit.dto.response.UserInfoResponse;
 import com.example.kotkit.entity.Users;
-import com.example.kotkit.entity.enums.FriendshipStatus;
 import com.example.kotkit.exception.AppException;
-import com.example.kotkit.repository.FriendshipRepository;
 import com.example.kotkit.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -22,7 +19,6 @@ import java.util.List;
 public class UserService {
     public static final String USER_NOT_FOUND = "USER_NOT_FOUND";
     private final UserRepository userRepository;
-    private final FriendshipRepository friendshipRepository;
     private final ModelMapper mapper;
 
     public Users findByUsername(String username) {
@@ -33,23 +29,23 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Users getCurrentUser() {
+    public Users getMe() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (Users) authentication.getPrincipal();
     }
 
-    public int getCurrentUserId() {
-        return getCurrentUser().getId();
+    public int getMeId() {
+        return getMe().getId();
     }
 
-    public UserResponse updateCurrentUser(UpdateUserInfoInput input) {
-        int meId = getCurrentUserId();
+    public UserInfoResponse updateMe(UpdateUserInfoInput input) {
+        int meId = getMeId();
         Users user = getUser(meId);
 
         mapper.map(input, user);
         userRepository.save(user);
 
-        return mapper.map(user, UserResponse.class);
+        return mapper.map(user, UserInfoResponse.class);
     }
 
     public boolean existsByUsername(String username) {
@@ -60,27 +56,23 @@ public class UserService {
         return userRepository.findById(userId).orElseThrow(() -> new AppException(404, USER_NOT_FOUND));
     }
 
-    public List<Users> searchUsers(String query) {
+    public List<UserDetailsResponse> searchUsers(String query) {
+        int meId = getMeId();
+
         if (query == null) {
-            return userRepository.findAll();
+            return userRepository.getAllUsers(meId);
         }
-        return userRepository.searchUsers(query);
+
+        return userRepository.searchUsers(query, meId);
     }
 
-    public UserResponse getUserResponse(int userId) {
+    public UserInfoResponse getUserInfo(int userId) {
         Users users = getUser(userId);
 
-        return mapper.map(users, UserResponse.class);
+        return mapper.map(users, UserInfoResponse.class);
     }
 
-    public UserProfileResponse getUserProfile(int userId) {
-        UserResponse user = getUserResponse(userId);
-
-        int numberOfFriends = friendshipRepository.countNumberOfFriends(userId);
-
-        Friendship friendship = friendshipRepository.findFriendship(getCurrentUser().getId(), userId).orElse(null);
-        FriendshipStatus friendshipStatus = friendship == null ? null : friendship.getStatus();
-
-        return new UserProfileResponse(user, numberOfFriends, friendshipStatus);
+    public UserDetailsResponse getUserDetails(int userId) {
+        return userRepository.getUserDetailsById(userId, getMeId());
     }
 }

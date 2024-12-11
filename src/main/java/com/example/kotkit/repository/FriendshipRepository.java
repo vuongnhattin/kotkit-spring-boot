@@ -1,5 +1,6 @@
 package com.example.kotkit.repository;
 
+import com.example.kotkit.dto.response.UserDetailsResponse;
 import com.example.kotkit.entity.Friendship;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,9 +24,16 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Integer>
     Optional<Friendship> findFriendship(int user1Id, int user2Id);
 
     @Query("""
-            select count(f) from Friendship f
-            where (f.user1Id = :userId)
-            and f.status = 'FRIEND'
+            select new com.example.kotkit.dto.response.UserDetailsResponse(
+            new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.username, u.fullName, u.avatar, u.birthday),            (select count(f.id) from Friendship f where f.user1Id = u.id and f.status = 'FRIEND'),
+            (select f.status from Friendship f where f.user2Id = u.id and f.user1Id = :meId)
+            )
+            from Users u
+            where u.id in (
+                select f.user2Id from Friendship f
+                where f.user1Id = :userId and f.status = 'FRIEND'
+            )
             """)
-    int countNumberOfFriends(@Param("userId") int userId);
+    List<UserDetailsResponse> findFriendsOfUser(@Param("userId") int userId, @Param("meId") int meId);
+
 }
