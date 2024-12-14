@@ -1,6 +1,6 @@
 package com.example.kotkit.exception;
 
-import com.example.kotkit.dto.response.DataResponse;
+import com.example.kotkit.dto.response.ApiResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,14 +20,14 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public DataResponse handleException(Exception ex) {
+    public ApiResponse<Void> handleException(Exception ex) {
         log.error(ex.getMessage(), ex);
-        return new DataResponse(null, 500, "INTERNAL_SERVER_ERROR");
+        return new ApiResponse<>(null, 500, "INTERNAL_SERVER_ERROR");
     }
 
     @ExceptionHandler(AppException.class)
-    public ResponseEntity<DataResponse> handleAppException(AppException e) {
-        DataResponse response = new DataResponse(null, e.getStatus(), e.getCode());
+    public ResponseEntity<ApiResponse<Void>> handleAppException(AppException e) {
+        ApiResponse<Void> response = new ApiResponse<>(null, e.getStatus(), e.getCode());
         return ResponseEntity.status(e.getStatus()).body(response);
     }
 
@@ -47,14 +47,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public DataResponse handleBadCredentialsException(BadCredentialsException ex) {
-        return new DataResponse(null, 400, "BAD_CREDENTIALS");
+    public ApiResponse<Void> handleBadCredentialsException(BadCredentialsException ex) {
+        return new ApiResponse<>(null, 400, "BAD_CREDENTIALS");
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public DataResponse handleExpiredJwtException(ExpiredJwtException ex) {
-        return new DataResponse(null, 401, "TOKEN_EXPIRED");
+    public ApiResponse<Void> handleExpiredJwtException(ExpiredJwtException ex) {
+        return new ApiResponse<>(null, 401, "TOKEN_EXPIRED");
     }
 }
 

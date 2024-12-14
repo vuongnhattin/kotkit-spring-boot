@@ -19,9 +19,10 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Integer>
 
     @Query("""
             select f from Friendship f
-            where (f.user1Id = :user1Id and f.user2Id = :user2Id)
+            where f.user1Id = :user1Id
+            and f.user2Id = :user2Id
             """)
-    Optional<Friendship> findFriendship(int user1Id, int user2Id);
+    Optional<Friendship> findFriendship(@Param("user1Id") int user1Id, @Param("user2Id") int user2Id);
 
     @Query("""
             select new com.example.kotkit.dto.response.UserDetailsResponse(

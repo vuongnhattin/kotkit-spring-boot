@@ -16,6 +16,7 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
             new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.username, u.fullName, u.avatar, u.birthday)
             ) from Video v, Users u
             where v.creatorId = u.id
+            and u.id = :creatorId
             and v.visibility = 'PRIVATE'
             """)
     List<VideoResponse> getPrivateVideos(@Param("creatorId") int creatorId);
@@ -26,6 +27,7 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
             new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.username, u.fullName, u.avatar, u.birthday)
             ) from Video v, Users u
             where v.creatorId = u.id
+            and u.id = :creatorId
             and v.visibility = 'PUBLIC'
             """)
     List<VideoResponse> getPublicVideos(@Param("creatorId") int creatorId);

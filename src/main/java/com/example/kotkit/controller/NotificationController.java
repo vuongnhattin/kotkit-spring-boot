@@ -1,6 +1,6 @@
 package com.example.kotkit.controller;
 
-import com.example.kotkit.dto.response.DataResponse;
+import com.example.kotkit.dto.response.ApiResponse;
 import com.example.kotkit.entity.Notification;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.List;
 public class NotificationController {
     @Operation(summary = "Get all notifications of current user")
     @GetMapping("notifications")
-    public DataResponse<List<Notification>> getNotifications() {
+    public ApiResponse<List<Notification>> getNotifications() {
         return null;
     }
 }

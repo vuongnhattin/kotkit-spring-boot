@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DataResponse<T> {
+public class ApiResponse<T> {
     T data = null;
     Integer status = 200;
     String code = "SUCCESS";
 
-    public DataResponse(T data) {
+    public ApiResponse(T data) {
         this.data = data;
     }
 }
