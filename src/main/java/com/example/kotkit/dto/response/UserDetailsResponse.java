@@ -18,6 +18,7 @@ public class UserDetailsResponse {
     UserInfoResponse user;
 
     private Long numberOfFriends;
+
     @Enumerated(EnumType.STRING)
     FriendshipStatus friendStatus;
 }

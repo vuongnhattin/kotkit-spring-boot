@@ -24,8 +24,10 @@ public class UserController {
 
     @Operation(summary = "Search users by name or username")
     @GetMapping("users")
-    public ApiResponse<List<UserDetailsResponse>> getUsers(@RequestParam(value = "q") @Nullable String query) {
-        return new ApiResponse<>(userService.searchUsers(query));
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<List<UserDetailsResponse>> getUsers(@RequestParam(value = "q") @Nullable String query, @RequestParam(value = "mock", defaultValue = "false") Boolean mock) {
+        if (mock) return new ApiResponse<>(List.of());
+        return new ApiResponse<>(userService.searchUsers(query), 400, "TOKEN_EXPIRED");
     }
 
     @Operation(summary = "Get user details")
