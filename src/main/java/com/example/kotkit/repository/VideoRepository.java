@@ -13,11 +13,11 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
     @Query("""
             select new com.example.kotkit.dto.response.VideoResponse(
                 v,
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.numberOfFriends, u.numberOfVideos, u.isBlocked, u.isVerified)
+                u
             )
             from Video v, Users u
-            where v.creatorId = u.id
-            and u.id = :creatorId
+            where v.creatorId = u.userId
+            and u.userId = :creatorId
             and v.mode = 'PRIVATE'
             """)
     List<VideoResponse> getPrivateVideos(@Param("creatorId") int creatorId);
@@ -25,11 +25,11 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
     @Query("""
             select new com.example.kotkit.dto.response.VideoResponse(
                 v,
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.numberOfFriends, u.numberOfVideos, u.isBlocked, u.isVerified)
+                u
             )
             from Video v, Users u
-            where v.creatorId = u.id
-            and u.id = :creatorId
+            where v.creatorId = u.userId
+            and u.userId = :creatorId
             and v.mode = 'PUBLIC'
             """)
     List<VideoResponse> getPublicVideos(@Param("creatorId") int creatorId);

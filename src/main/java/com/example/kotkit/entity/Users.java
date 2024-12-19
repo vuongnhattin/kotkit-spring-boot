@@ -1,6 +1,7 @@
 package com.example.kotkit.entity;
 
 import com.example.kotkit.entity.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,6 +47,7 @@ public class Users implements UserDetails {
     private Instant updatedAt;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Stream.of(roles.split(","))
                 .map(SimpleGrantedAuthority::new)
@@ -53,30 +55,36 @@ public class Users implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonIgnore
     public String getUsername() {
         return email;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true; // Implement your logic if you need this
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true; // Implement your logic if you need this
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true; // Implement your logic if you need this
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true; // Implement your logic if you need this
     }

@@ -1,5 +1,6 @@
 package com.example.kotkit.dto.response;
 
+import com.example.kotkit.entity.Users;
 import com.example.kotkit.entity.Video;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.AllArgsConstructor;
@@ -14,5 +15,5 @@ import lombok.NoArgsConstructor;
 public class VideoResponse {
     @JsonUnwrapped
     Video video;
-    UserInfoResponse creator;
+    Users creator;
 }

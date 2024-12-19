@@ -2,7 +2,6 @@ package com.example.kotkit.service;
 
 import com.example.kotkit.dto.input.LoginInput;
 import com.example.kotkit.dto.input.RegisterInput;
-import com.example.kotkit.dto.response.UserInfoResponse;
 import com.example.kotkit.entity.Users;
 import com.example.kotkit.exception.AppException;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ public class AuthService {
 
     private final ModelMapper mapper;
 
-    public UserInfoResponse register(RegisterInput input) {
+    public Users register(RegisterInput input) {
         if (userService.existsByEmail(input.getEmail())) {
             throw new AppException(400, "USERNAME_DUPLICATED");
         }
@@ -33,9 +32,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(input.getPassword()));
         user.setRoles("ROLE_USER");
 
-        userService.createUser(user);
-
-        return mapper.map(user, UserInfoResponse.class);
+        return userService.createUser(user);
     }
 
     public Users login(LoginInput input) {

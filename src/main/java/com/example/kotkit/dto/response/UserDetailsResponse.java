@@ -1,5 +1,6 @@
 package com.example.kotkit.dto.response;
 
+import com.example.kotkit.entity.Users;
 import com.example.kotkit.entity.enums.FriendshipStatus;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import jakarta.persistence.EnumType;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserDetailsResponse {
     @JsonUnwrapped
-    UserInfoResponse user;
+    Users user;
 
     // Friend status with current user
     @Enumerated(EnumType.STRING)

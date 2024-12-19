@@ -3,7 +3,7 @@ package com.example.kotkit.controller;
 import com.example.kotkit.dto.input.UpdateUserInfoInput;
 import com.example.kotkit.dto.response.ApiResponse;
 import com.example.kotkit.dto.response.UserDetailsResponse;
-import com.example.kotkit.dto.response.UserInfoResponse;
+import com.example.kotkit.entity.Users;
 import com.example.kotkit.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Nullable;
@@ -19,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @Operation(summary = "Search users by name or username")
-    @GetMapping("users")
+    @GetMapping("users/search")
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiResponse<List<UserDetailsResponse>> getUsers(@RequestParam(value = "q") @Nullable String query, @RequestParam(value = "mock", defaultValue = "false") Boolean mock) {
         if (mock) return new ApiResponse<>(List.of());
@@ -34,7 +34,7 @@ public class UserController {
 
     @Operation(summary = "Update info of current user")
     @PutMapping("me/info")
-    public ApiResponse<UserInfoResponse> updateInfo(@RequestBody @Valid UpdateUserInfoInput input) {
+    public ApiResponse<Users> updateInfo(@RequestBody @Valid UpdateUserInfoInput input) {
         return new ApiResponse<>(userService.updateMe(input));
     }
 }

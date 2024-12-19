@@ -2,7 +2,6 @@ package com.example.kotkit.service;
 
 import com.example.kotkit.dto.input.UpdateUserInfoInput;
 import com.example.kotkit.dto.response.UserDetailsResponse;
-import com.example.kotkit.dto.response.UserInfoResponse;
 import com.example.kotkit.entity.Users;
 import com.example.kotkit.exception.AppException;
 import com.example.kotkit.repository.UserRepository;
@@ -38,14 +37,12 @@ public class UserService {
         return getMe().getUserId();
     }
 
-    public UserInfoResponse updateMe(UpdateUserInfoInput input) {
+    public Users updateMe(UpdateUserInfoInput input) {
         int meId = getMeId();
         Users user = getUserById(meId);
 
         mapper.map(input, user);
-        userRepository.save(user);
-
-        return mapper.map(user, UserInfoResponse.class);
+        return userRepository.save(user);
     }
 
     public boolean existsByEmail(String username) {

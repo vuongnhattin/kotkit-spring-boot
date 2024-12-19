@@ -16,8 +16,8 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     @Query("""
             select new com.example.kotkit.dto.response.UserDetailsResponse(
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.numberOfFriends, u.numberOfVideos, u.isBlocked, u.isVerified),
-                (select f.status from Friendship f where f.user2Id = u.id and f.user1Id = :meId)
+                u,
+                (select f.status from Friendship f where f.user2Id = u.userId and f.user1Id = :meId)
             )
             from Users u
             where lower(u.email) like lower(concat('%', :query, '%'))
@@ -27,8 +27,8 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     @Query("""
             select new com.example.kotkit.dto.response.UserDetailsResponse(
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.numberOfFriends, u.numberOfVideos, u.isBlocked, u.isVerified),            
-                (select f.status from Friendship f where f.user2Id = u.id and f.user1Id = :meId)
+                u,
+                (select f.status from Friendship f where f.user2Id = u.userId and f.user1Id = :meId)
             )
             from Users u
             """)
@@ -36,11 +36,11 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     @Query("""
             select new com.example.kotkit.dto.response.UserDetailsResponse(
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.numberOfFriends, u.numberOfVideos, u.isBlocked, u.isVerified),            
-                (select f.status from Friendship f where f.user2Id = u.id and f.user1Id = :meId)
+                u,
+                (select f.status from Friendship f where f.user2Id = u.userId and f.user1Id = :meId)
             )
             from Users u
-            where u.id = :userId
+            where u.userId = :userId
             """)
     UserDetailsResponse getUserDetailsById(@Param("userId") int userId, @Param("meId") int meId);
 }
