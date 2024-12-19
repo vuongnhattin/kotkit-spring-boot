@@ -10,25 +10,25 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<Users, Integer> {
-    Optional<Users> findByUsername(String username);
+    Optional<Users> findByEmail(String email);
 
-    boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
 
     @Query("""
             select new com.example.kotkit.dto.response.UserDetailsResponse(
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.username, u.fullName, u.avatar, u.birthday),
+                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.isBlocked, u.isVerified),
                 (select count(f.id) from Friendship f where f.user1Id = u.id and f.status = 'FRIEND'),
                 (select f.status from Friendship f where f.user2Id = u.id and f.user1Id = :meId)
             )
             from Users u
-            where lower(u.username) like lower(concat('%', :query, '%'))
+            where lower(u.email) like lower(concat('%', :query, '%'))
             or lower(u.fullName) like lower(concat('%', :query, '%'))
             """)
     List<UserDetailsResponse> searchUsers(@Param("query") String query, @Param("meId") int meId);
 
     @Query("""
             select new com.example.kotkit.dto.response.UserDetailsResponse(
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.username, u.fullName, u.avatar, u.birthday),            
+                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.isBlocked, u.isVerified),            
                 (select count(f.id) from Friendship f where f.user1Id = u.id and f.status = 'FRIEND'),
                 (select f.status from Friendship f where f.user2Id = u.id and f.user1Id = :meId)
             )
@@ -38,7 +38,7 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     @Query("""
             select new com.example.kotkit.dto.response.UserDetailsResponse(
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.username, u.fullName, u.avatar, u.birthday),            
+                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.isBlocked, u.isVerified),            
                 (select count(f.id) from Friendship f where f.user1Id = u.id and f.status = 'FRIEND'),
                 (select f.status from Friendship f where f.user2Id = u.id and f.user1Id = :meId)
             )

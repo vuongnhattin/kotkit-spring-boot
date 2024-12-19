@@ -18,7 +18,7 @@ public class VideoController {
 
     @Operation(summary = "Get list of videos of a user")
     @GetMapping("videos-of-user")
-    public ApiResponse<List<VideoResponse>> getVideos(@RequestParam("userId") int userId, @RequestParam(defaultValue = "public") String visibility) {
-        return new ApiResponse<>(videoService.getVideos(userId, visibility));
+    public ApiResponse<List<VideoResponse>> getVideos(@RequestParam("userId") int userId, @RequestParam(defaultValue = "public") String mode) {
+        return new ApiResponse<>(videoService.getVideos(userId, mode));
     }
 }

@@ -24,7 +24,7 @@ public class AuthService {
     private final ModelMapper mapper;
 
     public UserInfoResponse register(RegisterInput input) {
-        if (userService.existsByUsername(input.getUsername())) {
+        if (userService.existsByUsername(input.getEmail())) {
             throw new AppException(400, "USERNAME_DUPLICATED");
         }
 
@@ -39,19 +39,19 @@ public class AuthService {
     }
 
     public Users login(LoginInput input) {
-        if (!userService.existsByUsername(input.getUsername())) {
+        if (!userService.existsByUsername(input.getEmail())) {
             throw new AppException(400, "USERNAME_NOT_FOUND");
         }
 
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            input.getUsername(),
+                            input.getEmail(),
                             input.getPassword()
                     )
             );
 
-            return userService.findByUsername(input.getUsername());
+            return userService.findByUsername(input.getEmail());
         } catch (Exception e) {
             throw new AppException(400, "WRONG_PASSWORD");
         }

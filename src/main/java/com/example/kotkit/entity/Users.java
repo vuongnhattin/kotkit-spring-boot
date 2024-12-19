@@ -1,9 +1,7 @@
 package com.example.kotkit.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.kotkit.entity.enums.Gender;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,13 +26,19 @@ import java.util.stream.Stream;
 public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String username;
+    private int userId;
+    private String email;
     private String fullName;
     private String password;
     private String roles;
     private String avatar;
     private LocalDate birthday;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+    private Integer numberOfFriends = 0;
+    private Integer numberOfVideos = 0;
+    private Boolean isBlocked = false;
+    private Boolean isVerified = false;
 
     @CreationTimestamp
     private Instant createdAt;
@@ -53,9 +57,8 @@ public class Users implements UserDetails {
         return password;
     }
 
-    @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override

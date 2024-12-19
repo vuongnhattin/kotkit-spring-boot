@@ -22,7 +22,7 @@ public class UserService {
     private final ModelMapper mapper;
 
     public Users findByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new AppException(404, USER_NOT_FOUND));
+        return userRepository.findByEmail(username).orElseThrow(() -> new AppException(404, USER_NOT_FOUND));
     }
 
     public Users createUser(Users user) {
@@ -35,7 +35,7 @@ public class UserService {
     }
 
     public int getMeId() {
-        return getMe().getId();
+        return getMe().getUserId();
     }
 
     public UserInfoResponse updateMe(UpdateUserInfoInput input) {
@@ -49,7 +49,7 @@ public class UserService {
     }
 
     public boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
+        return userRepository.existsByEmail(username);
     }
 
     public Users getUser(int userId) {

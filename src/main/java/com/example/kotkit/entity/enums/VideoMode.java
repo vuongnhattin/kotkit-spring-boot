@@ -1,6 +1,6 @@
 package com.example.kotkit.entity.enums;
 
-public enum VideoVisibility {
+public enum VideoMode {
     PUBLIC,
     PRIVATE;
 

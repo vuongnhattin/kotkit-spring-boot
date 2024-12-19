@@ -1,9 +1,7 @@
 package com.example.kotkit.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.kotkit.entity.enums.NotificationType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,9 +19,11 @@ import java.time.Instant;
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer notificationId;
     private Integer userId;
     private String message;
+    @Enumerated(EnumType.STRING)
+    private NotificationType type;
 
     @CreationTimestamp
     private Instant createdAt;

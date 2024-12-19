@@ -1,1 +1,0 @@
-alter table friendship modify column status enum('SENT', 'RECEIVED', 'FRIEND')
