@@ -13,7 +13,7 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
     @Query("""
             select new com.example.kotkit.dto.response.VideoResponse(
                 v,
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.isBlocked, u.isVerified)
+                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.numberOfFriends, u.numberOfVideos, u.isBlocked, u.isVerified)
             )
             from Video v, Users u
             where v.creatorId = u.id
@@ -25,7 +25,7 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
     @Query("""
             select new com.example.kotkit.dto.response.VideoResponse(
                 v,
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.isBlocked, u.isVerified)
+                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.numberOfFriends, u.numberOfVideos, u.isBlocked, u.isVerified)
             )
             from Video v, Users u
             where v.creatorId = u.id

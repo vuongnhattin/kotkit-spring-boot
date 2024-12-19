@@ -22,6 +22,8 @@ public class UserInfoResponse {
     private LocalDate birthday;
     @Enumerated(EnumType.STRING)
     private Gender gender;
+    private Long numberOfFriends;
+    private Long numberOfVideos;
     private Boolean isBlocked;
     private Boolean isVerified;
 }

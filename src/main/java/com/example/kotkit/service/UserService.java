@@ -40,7 +40,7 @@ public class UserService {
 
     public UserInfoResponse updateMe(UpdateUserInfoInput input) {
         int meId = getMeId();
-        Users user = getUser(meId);
+        Users user = getUserById(meId);
 
         mapper.map(input, user);
         userRepository.save(user);
@@ -48,11 +48,11 @@ public class UserService {
         return mapper.map(user, UserInfoResponse.class);
     }
 
-    public boolean existsByUsername(String username) {
+    public boolean existsByEmail(String username) {
         return userRepository.existsByEmail(username);
     }
 
-    public Users getUser(int userId) {
+    public Users getUserById(int userId) {
         return userRepository.findById(userId).orElseThrow(() -> new AppException(404, USER_NOT_FOUND));
     }
 
@@ -66,13 +66,19 @@ public class UserService {
         return userRepository.searchUsers(query, meId);
     }
 
-    public UserInfoResponse getUserInfo(int userId) {
-        Users users = getUser(userId);
-
-        return mapper.map(users, UserInfoResponse.class);
-    }
-
     public UserDetailsResponse getUserDetails(int userId) {
         return userRepository.getUserDetailsById(userId, getMeId());
+    }
+
+    public void increaseNumberOfFriends(int userId) {
+        Users user = getUserById(userId);
+        user.setNumberOfFriends(user.getNumberOfFriends() + 1);
+        userRepository.save(user);
+    }
+
+    public void decreaseNumberOfFriends(int userId) {
+        Users user = getUserById(userId);
+        user.setNumberOfFriends(user.getNumberOfFriends() - 1);
+        userRepository.save(user);
     }
 }

@@ -16,8 +16,7 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     @Query("""
             select new com.example.kotkit.dto.response.UserDetailsResponse(
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.isBlocked, u.isVerified),
-                (select count(f.id) from Friendship f where f.user1Id = u.id and f.status = 'FRIEND'),
+                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.numberOfFriends, u.numberOfVideos, u.isBlocked, u.isVerified),
                 (select f.status from Friendship f where f.user2Id = u.id and f.user1Id = :meId)
             )
             from Users u
@@ -28,8 +27,7 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     @Query("""
             select new com.example.kotkit.dto.response.UserDetailsResponse(
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.isBlocked, u.isVerified),            
-                (select count(f.id) from Friendship f where f.user1Id = u.id and f.status = 'FRIEND'),
+                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.numberOfFriends, u.numberOfVideos, u.isBlocked, u.isVerified),            
                 (select f.status from Friendship f where f.user2Id = u.id and f.user1Id = :meId)
             )
             from Users u
@@ -38,8 +36,7 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     @Query("""
             select new com.example.kotkit.dto.response.UserDetailsResponse(
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.isBlocked, u.isVerified),            
-                (select count(f.id) from Friendship f where f.user1Id = u.id and f.status = 'FRIEND'),
+                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.email, u.fullName, u.avatar, u.birthday, u.gender, u.numberOfFriends, u.numberOfVideos, u.isBlocked, u.isVerified),            
                 (select f.status from Friendship f where f.user2Id = u.id and f.user1Id = :meId)
             )
             from Users u

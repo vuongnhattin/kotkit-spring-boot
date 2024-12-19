@@ -35,8 +35,8 @@ public class Users implements UserDetails {
     private LocalDate birthday;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    private Integer numberOfFriends = 0;
-    private Integer numberOfVideos = 0;
+    private Long numberOfFriends = 0L;
+    private Long numberOfVideos = 0L;
     private Boolean isBlocked = false;
     private Boolean isVerified = false;
 

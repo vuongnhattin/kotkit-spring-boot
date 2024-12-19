@@ -24,7 +24,7 @@ public class AuthService {
     private final ModelMapper mapper;
 
     public UserInfoResponse register(RegisterInput input) {
-        if (userService.existsByUsername(input.getEmail())) {
+        if (userService.existsByEmail(input.getEmail())) {
             throw new AppException(400, "USERNAME_DUPLICATED");
         }
 
@@ -39,7 +39,7 @@ public class AuthService {
     }
 
     public Users login(LoginInput input) {
-        if (!userService.existsByUsername(input.getEmail())) {
+        if (!userService.existsByEmail(input.getEmail())) {
             throw new AppException(400, "USERNAME_NOT_FOUND");
         }
 

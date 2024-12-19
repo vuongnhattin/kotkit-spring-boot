@@ -17,8 +17,7 @@ public class UserDetailsResponse {
     @JsonUnwrapped
     UserInfoResponse user;
 
-    private Long numberOfFriends;
-
+    // Friend status with current user
     @Enumerated(EnumType.STRING)
     FriendshipStatus friendStatus;
 }

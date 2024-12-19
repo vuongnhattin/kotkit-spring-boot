@@ -22,9 +22,9 @@ public class Video {
     private String title;
     private String videoUrl;
     private String thumbnail;
-    private Integer numberOfLikes = 0;
-    private Integer numberOfComments = 0;
-    private Integer numberOfViews = 0;
+    private Long numberOfLikes = 0L;
+    private Long numberOfComments = 0L;
+    private Long numberOfViews = 0L;
     @JsonIgnore
     private Integer creatorId;
     @Enumerated(EnumType.STRING)
