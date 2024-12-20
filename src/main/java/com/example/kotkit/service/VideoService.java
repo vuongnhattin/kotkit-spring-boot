@@ -1,6 +1,7 @@
 package com.example.kotkit.service;
 
 import com.example.kotkit.dto.response.VideoResponse;
+import com.example.kotkit.entity.Users;
 import com.example.kotkit.entity.Video;
 import com.example.kotkit.entity.enums.VideoMode;
 import com.example.kotkit.exception.AppException;
@@ -23,7 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class VideoService {
-    public static final String VIDEO_NOT_FOUND = "VIDEO_NOT_FOUND";
     private final VideoRepository videoRepository;
     private final UserService userService;
     private final FriendshipService friendshipService;
@@ -52,6 +52,12 @@ public class VideoService {
         }
 
         return videos;
+    }
+
+    public VideoResponse uploadVideo(Video video) {
+        videoRepository.save(video);
+        Users user = userService.getUserById(video.getCreatorId());
+        return new VideoResponse(video, user);
     }
 
     public List<VideoResponse> getAllVideos() {

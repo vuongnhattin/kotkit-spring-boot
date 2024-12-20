@@ -9,6 +9,7 @@ services:
     volumes:
       - ./mysql:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
   minio:
     image: minio/minio
     container_name: minio
