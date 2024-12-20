@@ -1,6 +1,9 @@
 spring:
   application:
     name: Kotkit
+  web:
+    resources:
+      static-locations: classpath:/nonexistent/
 
   datasource:
       url: jdbc:mysql://localhost:3308/kotkit

@@ -33,4 +33,10 @@ public class VideoService {
 
         return videos;
     }
+
+    public List<VideoResponse> getAllVideos() {
+        List<VideoResponse> videos;
+        videos = videoRepository.getAllVideos();
+        return videos;
+    }
 }

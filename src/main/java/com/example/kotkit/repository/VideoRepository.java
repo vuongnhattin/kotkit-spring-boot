@@ -33,4 +33,14 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
             and v.visibility = 'PUBLIC'
             """)
     List<VideoResponse> getPublicVideos(@Param("creatorId") int creatorId);
+
+    @Query("""
+            select new com.example.kotkit.dto.response.VideoResponse(
+                v,
+                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.username, u.fullName, u.avatar, u.birthday)
+            )
+            from Video v, Users u
+            where v.creatorId = u.id
+            """)
+    List<VideoResponse> getAllVideos();
 }
