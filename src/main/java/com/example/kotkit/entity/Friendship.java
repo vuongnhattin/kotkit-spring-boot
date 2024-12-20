@@ -19,7 +19,7 @@ import java.time.Instant;
 public class Friendship {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer friendshipId;
 
     @Column(name = "user1_id")
     private Integer user1Id;

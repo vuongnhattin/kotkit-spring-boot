@@ -13,34 +13,34 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
     @Query("""
             select new com.example.kotkit.dto.response.VideoResponse(
                 v,
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.username, u.fullName, u.avatar, u.birthday)
+                u
             )
             from Video v, Users u
-            where v.creatorId = u.id
-            and u.id = :creatorId
-            and v.visibility = 'PRIVATE'
+            where v.creatorId = u.userId
+            and u.userId = :creatorId
+            and v.mode = 'PRIVATE'
             """)
     List<VideoResponse> getPrivateVideos(@Param("creatorId") int creatorId);
 
     @Query("""
             select new com.example.kotkit.dto.response.VideoResponse(
                 v,
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.username, u.fullName, u.avatar, u.birthday)
+                u
             )
             from Video v, Users u
-            where v.creatorId = u.id
-            and u.id = :creatorId
-            and v.visibility = 'PUBLIC'
+            where v.creatorId = u.userId
+            and u.userId = :creatorId
+            and v.mode = 'PUBLIC'
             """)
     List<VideoResponse> getPublicVideos(@Param("creatorId") int creatorId);
 
     @Query("""
             select new com.example.kotkit.dto.response.VideoResponse(
                 v,
-                new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.username, u.fullName, u.avatar, u.birthday)
+                u
             )
             from Video v, Users u
-            where v.creatorId = u.id
+            where v.creatorId = u.userId
             """)
     List<VideoResponse> getAllVideos();
 }

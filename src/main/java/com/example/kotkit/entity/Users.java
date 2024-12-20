@@ -1,9 +1,8 @@
 package com.example.kotkit.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.kotkit.entity.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,13 +27,19 @@ import java.util.stream.Stream;
 public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String username;
+    private int userId;
+    private String email;
     private String fullName;
     private String password;
     private String roles;
     private String avatar;
     private LocalDate birthday;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+    private Long numberOfFriends = 0L;
+    private Long numberOfVideos = 0L;
+    private Boolean isBlocked = false;
+    private Boolean isVerified = false;
 
     @CreationTimestamp
     private Instant createdAt;
@@ -42,6 +47,7 @@ public class Users implements UserDetails {
     private Instant updatedAt;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Stream.of(roles.split(","))
                 .map(SimpleGrantedAuthority::new)
@@ -49,31 +55,36 @@ public class Users implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
-    @Override
+    @JsonIgnore
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true; // Implement your logic if you need this
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true; // Implement your logic if you need this
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true; // Implement your logic if you need this
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true; // Implement your logic if you need this
     }

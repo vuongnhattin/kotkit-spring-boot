@@ -72,6 +72,9 @@ public class FriendshipService {
 
         friendshipRepository.save(friendship1);
         friendshipRepository.save(friendship2);
+
+        userService.increaseNumberOfFriends(meId);
+        userService.increaseNumberOfFriends(userId);
     }
 
     public void rejectFriendRequest(int userId) {
@@ -126,6 +129,9 @@ public class FriendshipService {
 
         friendshipRepository.delete(friendship1);
         friendshipRepository.delete(friendship2);
+
+        userService.decreaseNumberOfFriends(meId);
+        userService.decreaseNumberOfFriends(userId);
     }
 
     public boolean isFriend(int user1Id, int user2Id) {

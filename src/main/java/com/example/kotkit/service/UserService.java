@@ -2,7 +2,6 @@ package com.example.kotkit.service;
 
 import com.example.kotkit.dto.input.UpdateUserInfoInput;
 import com.example.kotkit.dto.response.UserDetailsResponse;
-import com.example.kotkit.dto.response.UserInfoResponse;
 import com.example.kotkit.entity.Users;
 import com.example.kotkit.exception.AppException;
 import com.example.kotkit.repository.UserRepository;
@@ -22,7 +21,7 @@ public class UserService {
     private final ModelMapper mapper;
 
     public Users findByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new AppException(404, USER_NOT_FOUND));
+        return userRepository.findByEmail(username).orElseThrow(() -> new AppException(404, USER_NOT_FOUND));
     }
 
     public Users createUser(Users user) {
@@ -35,24 +34,22 @@ public class UserService {
     }
 
     public int getMeId() {
-        return getMe().getId();
+        return getMe().getUserId();
     }
 
-    public UserInfoResponse updateMe(UpdateUserInfoInput input) {
+    public Users updateMe(UpdateUserInfoInput input) {
         int meId = getMeId();
-        Users user = getUser(meId);
+        Users user = getUserById(meId);
 
         mapper.map(input, user);
-        userRepository.save(user);
-
-        return mapper.map(user, UserInfoResponse.class);
+        return userRepository.save(user);
     }
 
-    public boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
+    public boolean existsByEmail(String username) {
+        return userRepository.existsByEmail(username);
     }
 
-    public Users getUser(int userId) {
+    public Users getUserById(int userId) {
         return userRepository.findById(userId).orElseThrow(() -> new AppException(404, USER_NOT_FOUND));
     }
 
@@ -66,13 +63,19 @@ public class UserService {
         return userRepository.searchUsers(query, meId);
     }
 
-    public UserInfoResponse getUserInfo(int userId) {
-        Users users = getUser(userId);
-
-        return mapper.map(users, UserInfoResponse.class);
-    }
-
     public UserDetailsResponse getUserDetails(int userId) {
         return userRepository.getUserDetailsById(userId, getMeId());
+    }
+
+    public void increaseNumberOfFriends(int userId) {
+        Users user = getUserById(userId);
+        user.setNumberOfFriends(user.getNumberOfFriends() + 1);
+        userRepository.save(user);
+    }
+
+    public void decreaseNumberOfFriends(int userId) {
+        Users user = getUserById(userId);
+        user.setNumberOfFriends(user.getNumberOfFriends() - 1);
+        userRepository.save(user);
     }
 }

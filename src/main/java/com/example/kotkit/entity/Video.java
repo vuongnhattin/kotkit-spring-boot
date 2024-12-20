@@ -1,6 +1,6 @@
 package com.example.kotkit.entity;
 
-import com.example.kotkit.entity.enums.VideoVisibility;
+import com.example.kotkit.entity.enums.VideoMode;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,17 +18,17 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer videoId;
     private String title;
     private String videoUrl;
     private String thumbnail;
-    private Integer numberOfLikes;
-    private Integer numberOfComments;
-    private Integer numberOfViews;
+    private Long numberOfLikes = 0L;
+    private Long numberOfComments = 0L;
+    private Long numberOfViews = 0L;
     @JsonIgnore
     private Integer creatorId;
     @Enumerated(EnumType.STRING)
-    private VideoVisibility visibility;
+    private VideoMode mode;
     @CreationTimestamp
     private String createdAt;
     @UpdateTimestamp

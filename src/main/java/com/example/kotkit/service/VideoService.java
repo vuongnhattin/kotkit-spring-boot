@@ -1,7 +1,7 @@
 package com.example.kotkit.service;
 
 import com.example.kotkit.dto.response.VideoResponse;
-import com.example.kotkit.entity.enums.VideoVisibility;
+import com.example.kotkit.entity.enums.VideoMode;
 import com.example.kotkit.exception.AppException;
 import com.example.kotkit.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +16,9 @@ public class VideoService {
     private final UserService userService;
     private final FriendshipService friendshipService;
 
-    public List<VideoResponse> getVideos(int creatorId, String visibility) {
+    public List<VideoResponse> getVideos(int creatorId, String mode) {
         List<VideoResponse> videos;
-        if (visibility.equals(VideoVisibility.PRIVATE.toString())) {
+        if (mode.equals(VideoMode.PRIVATE.toString())) {
             int meId = userService.getMeId();
 
             if (meId == creatorId || friendshipService.isFriend(meId, creatorId)) {

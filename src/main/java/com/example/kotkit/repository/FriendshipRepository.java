@@ -26,11 +26,11 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Integer>
 
     @Query("""
             select new com.example.kotkit.dto.response.UserDetailsResponse(
-            new com.example.kotkit.dto.response.UserInfoResponse(u.id, u.username, u.fullName, u.avatar, u.birthday),            (select count(f.id) from Friendship f where f.user1Id = u.id and f.status = 'FRIEND'),
-            (select f.status from Friendship f where f.user2Id = u.id and f.user1Id = :meId)
+            u,
+            (select f.status from Friendship f where f.user2Id = u.userId and f.user1Id = :meId)
             )
             from Users u
-            where u.id in (
+            where u.userId in (
                 select f.user2Id from Friendship f
                 where f.user1Id = :userId and f.status = 'FRIEND'
             )

@@ -3,7 +3,6 @@ package com.example.kotkit.controller;
 import com.example.kotkit.dto.input.LoginInput;
 import com.example.kotkit.dto.input.RegisterInput;
 import com.example.kotkit.dto.response.LoginResponse;
-import com.example.kotkit.dto.response.UserInfoResponse;
 import com.example.kotkit.entity.Users;
 import com.example.kotkit.service.AuthService;
 import com.example.kotkit.service.JwtService;
@@ -25,7 +24,7 @@ public class AuthController {
 
     @Operation(summary = "Register a new user")
     @PostMapping("register")
-    public UserInfoResponse register(@RequestBody @Valid RegisterInput registerUserDto) {
+    public Users register(@RequestBody @Valid RegisterInput registerUserDto) {
         return authenticationService.register(registerUserDto);
     }
 
