@@ -15,3 +15,10 @@ security:
   jwt:
     secret-key: ZCQl6X6kQnI8PElWxA547cvvvzZSeRhQAzDe7ZYpOI0=
     expiration-time: 9999999999
+
+minio:
+  endpoint: http://localhost:9000
+  accessKey: minio_access_key
+  secretKey: minio_secret_key
+  bucket: kotkit
+  secure: false
