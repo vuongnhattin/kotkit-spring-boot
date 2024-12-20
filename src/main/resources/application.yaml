@@ -6,15 +6,26 @@ spring:
       static-locations: classpath:/nonexistent/
 
   datasource:
-      url: jdbc:mysql://localhost:3308/kotkit
-      username: root
-      password: 123
+    url: jdbc:mysql://localhost:3308/kotkit
+    username: root
+    password: 123
 
   jpa:
     hibernate:
       ddl-auto: none
 
+minio:
+  url: http://127.0.0.1:9000
+  access-key: minio_access_key
+  secret-key: minio_secret_key
+  bucket-name: videos
+
 security:
   jwt:
     secret-key: ZCQl6X6kQnI8PElWxA547cvvvzZSeRhQAzDe7ZYpOI0=
     expiration-time: 9999999999
+
+logging:
+  level:
+    org:
+      flywaydb: DEBUG

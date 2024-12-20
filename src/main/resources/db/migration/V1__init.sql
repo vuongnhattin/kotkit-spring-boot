@@ -33,7 +33,7 @@ CREATE TABLE video
     video_id           INT AUTO_INCREMENT PRIMARY KEY,
     creator_id         INT,
     title              VARCHAR(255),
-    video_url          VARCHAR(255),
+    minio_object_name  VARCHAR(255),
     thumbnail          VARCHAR(255),
     number_of_views    INT       DEFAULT 0,
     number_of_likes    INT       DEFAULT 0,
