@@ -1,6 +1,8 @@
 package com.example.kotkit.service;
 
 import com.example.kotkit.dto.response.VideoResponse;
+import com.example.kotkit.entity.Users;
+import com.example.kotkit.entity.Video;
 import com.example.kotkit.entity.enums.VideoMode;
 import com.example.kotkit.exception.AppException;
 import com.example.kotkit.exception.ErrorCode;
@@ -51,5 +53,11 @@ public class VideoService {
         else
             return;
         video = videoRepository.save(video);
+    }
+
+    public VideoResponse uploadVideo(Video video) {
+        videoRepository.save(video);
+        Users user = userService.getUserById(video.getCreatorId());
+        return new VideoResponse(video, user);
     }
 }
