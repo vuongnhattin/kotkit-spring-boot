@@ -3,9 +3,11 @@ package com.example.kotkit.service;
 import com.example.kotkit.dto.response.VideoResponse;
 import com.example.kotkit.entity.enums.VideoMode;
 import com.example.kotkit.exception.AppException;
+import com.example.kotkit.exception.ErrorCode;
 import com.example.kotkit.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,5 +34,22 @@ public class VideoService {
         }
 
         return videos;
+    }
+    public void increaseNumberOfComments(Integer videoId, Integer quantity){
+        if(quantity < 0) return;
+        var video = videoRepository.findById(videoId)
+                .orElseThrow(() -> new AppException(ErrorCode.VIDEO_NOT_FOUND.getStatus(), ErrorCode.VIDEO_NOT_FOUND.getCode()));
+        video.setNumberOfComments(video.getNumberOfComments() + quantity);
+        video = videoRepository.save(video);
+    }
+    public void decreaseNumberOfComments(Integer videoId, Integer quantity){
+        if(quantity < 0) return;
+        var video = videoRepository.findById(videoId)
+                .orElseThrow(() -> new AppException(ErrorCode.VIDEO_NOT_FOUND.getStatus(), ErrorCode.VIDEO_NOT_FOUND.getCode()));
+        if(video.getNumberOfComments() >= quantity)
+            video.setNumberOfComments(video.getNumberOfComments() - quantity);
+        else
+            return;
+        video = videoRepository.save(video);
     }
 }
