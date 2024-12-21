@@ -1,16 +1,13 @@
 package com.example.kotkit.dto.input;
 
-import com.example.kotkit.entity.Users;
-import com.example.kotkit.entity.Video;
 import com.example.kotkit.entity.enums.VideoMode;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
@@ -19,8 +16,9 @@ import lombok.NoArgsConstructor;
 public class VideoInput {
     @NotBlank
     private String title;
-    @NotBlank
+    @NotNull
     private Integer creatorId;
-    @NotBlank
     private VideoMode mode;
+    @NotNull
+    private MultipartFile file;
 }
