@@ -1,5 +1,6 @@
 package com.example.kotkit.service;
 
+import com.example.kotkit.dto.input.VideoInput;
 import com.example.kotkit.dto.response.VideoResponse;
 import com.example.kotkit.entity.Users;
 import com.example.kotkit.entity.Video;
@@ -19,6 +20,7 @@ public class VideoService {
     private final VideoRepository videoRepository;
     private final UserService userService;
     private final FriendshipService friendshipService;
+    private final MinioService minioService;
 
     public List<VideoResponse> getVideos(int creatorId, String mode) {
         List<VideoResponse> videos;
@@ -55,9 +57,21 @@ public class VideoService {
         video = videoRepository.save(video);
     }
 
-    public VideoResponse uploadVideo(Video video) {
+    public VideoResponse uploadVideo(VideoInput videoInput) {
+        if (videoInput.getFile().isEmpty()) {
+            throw new AppException(400, "Invalid file");
+        }
+
+        Video video = new Video();
+
+        video.setCreatorId(videoInput.getCreatorId());
+        video.setTitle(videoInput.getTitle());
+        video.setMode(videoInput.getMode());
+        video.setVideoUrl(minioService.upload(videoInput.getFile()));
+
         videoRepository.save(video);
         Users user = userService.getUserById(video.getCreatorId());
+
         return new VideoResponse(video, user);
     }
 }

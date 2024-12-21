@@ -7,6 +7,7 @@ import com.example.kotkit.entity.Video;
 import com.example.kotkit.service.MinioService;
 import com.example.kotkit.service.VideoService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +29,7 @@ public class VideoController {
 
     @Operation(summary = "Upload video")
     @PostMapping("/")
-    public ApiResponse<VideoResponse> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam("video") VideoInput video) {
-        return new ApiResponse<>(minioService.uploadVideo(file, video));
+    public ApiResponse<VideoResponse> uploadVideo(@Valid VideoInput videoInput) {
+        return new ApiResponse<>(videoService.uploadVideo(videoInput));
     }
 }
