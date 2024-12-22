@@ -24,6 +24,11 @@ public class FriendshipService {
         return friendshipRepository.findFriendsOfUser(userId, userService.getMeId());
     }
 
+    public boolean isFriend(int user1Id, int user2Id) {
+        Optional<Friendship> friendship = friendshipRepository.findFriendship(user1Id, user2Id);
+        return friendship.isPresent() && friendship.get().getStatus() == FriendshipStatus.FRIEND;
+    }
+
     public boolean existsFriendship(int user1Id, int user2Id) {
         Optional<Friendship> friendship = friendshipRepository.findFriendship(user1Id, user2Id);
         return friendship.isPresent();
@@ -132,10 +137,5 @@ public class FriendshipService {
 
         userService.decreaseNumberOfFriends(meId);
         userService.decreaseNumberOfFriends(userId);
-    }
-
-    public boolean isFriend(int user1Id, int user2Id) {
-        Optional<Friendship> friendship = friendshipRepository.findFriendship(user1Id, user2Id);
-        return friendship.isPresent() && friendship.get().getStatus() == FriendshipStatus.FRIEND;
     }
 }

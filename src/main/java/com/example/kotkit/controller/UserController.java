@@ -26,6 +26,12 @@ public class UserController {
         return new ApiResponse<>(userService.searchUsers(query), 400, "TOKEN_EXPIRED");
     }
 
+    @Operation(summary = "Get current user")
+    @GetMapping("me")
+    public ApiResponse<Users> getMe() {
+        return new ApiResponse<>(userService.getMe());
+    }
+
     @Operation(summary = "Get user details")
     @GetMapping("users/{userId}/details")
     public ApiResponse<UserDetailsResponse> getUser(@PathVariable int userId) {
@@ -33,7 +39,7 @@ public class UserController {
     }
 
     @Operation(summary = "Update info of current user")
-    @PutMapping("me/info")
+    @PutMapping("me")
     public ApiResponse<Users> updateInfo(@RequestBody @Valid UpdateUserInfoInput input) {
         return new ApiResponse<>(userService.updateMe(input));
     }

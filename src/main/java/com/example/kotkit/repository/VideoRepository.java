@@ -12,8 +12,7 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
 
     @Query("""
             select new com.example.kotkit.dto.response.VideoResponse(
-                v,
-                u
+                v, u
             )
             from Video v, Users u
             where v.creatorId = u.userId
@@ -24,8 +23,7 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
 
     @Query("""
             select new com.example.kotkit.dto.response.VideoResponse(
-                v,
-                u
+                v, u
             )
             from Video v, Users u
             where v.creatorId = u.userId

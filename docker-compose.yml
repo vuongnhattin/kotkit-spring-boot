@@ -9,7 +9,6 @@ services:
     volumes:
       - ./mysql:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-
   minio:
     image: minio/minio
     container_name: minio
@@ -22,3 +21,6 @@ services:
       MINIO_ACCESS_KEY: minio_access_key
       MINIO_SECRET_KEY: minio_secret_key
     command: server --console-address ":9001" /data
+
+volumes:
+  minio_storage:
