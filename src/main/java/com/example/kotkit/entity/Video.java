@@ -21,7 +21,7 @@ public class Video {
     private Integer videoId;
     private String title;
     private String videoUrl;
-    private String thumbnail;
+    private String thumbnail = "";
     private Integer numberOfLikes = 0;
     private Integer numberOfComments = 0;
     private Integer numberOfViews = 0;

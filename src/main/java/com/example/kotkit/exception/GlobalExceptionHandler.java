@@ -3,6 +3,7 @@ package com.example.kotkit.exception;
 import com.example.kotkit.dto.response.ApiResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -55,6 +56,15 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ApiResponse<Void> handleExpiredJwtException(ExpiredJwtException ex) {
         return new ApiResponse<>(null, 401, "TOKEN_EXPIRED");
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<Void> handleDataIntegrityViolationException(DataIntegrityViolationException exception){
+        return  ApiResponse.<Void>builder()
+                .code(ErrorCode.VIDEO_NOT_FOUND.getCode())
+                .status(ErrorCode.VIDEO_NOT_FOUND.getStatus())
+                .build();
     }
 }
 
