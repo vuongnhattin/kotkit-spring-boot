@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     // Handle error when validation failed
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(
+    public ApiResponse<Map<String, String>> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        return errors;
+        return new ApiResponse<>(errors, 400, "VALIDATION_ERROR");
     }
 
     @ExceptionHandler(BadCredentialsException.class)
