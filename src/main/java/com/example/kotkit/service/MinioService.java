@@ -1,18 +1,29 @@
 package com.example.kotkit.service;
 
 import com.example.kotkit.exception.AppException;
+import com.example.kotkit.dto.input.VideoInput;
+import com.example.kotkit.dto.response.VideoDataResponse;
+import com.example.kotkit.dto.response.VideoResponse;
+import com.example.kotkit.entity.Users;
+import com.example.kotkit.entity.Video;
+import com.example.kotkit.repository.VideoRepository;
 import io.minio.*;
+import io.minio.errors.MinioException;
 import jakarta.annotation.PostConstruct;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.modelmapper.ModelMapper;
 
 import java.util.Objects;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 @Service
@@ -20,6 +31,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MinioService {
     private final MinioClient minioClient;
+    private final VideoRepository videoRepository;
 
     @Value("${minio.bucket}")
     private String bucketName;
@@ -96,7 +108,39 @@ public class MinioService {
         return videoUrl;
     }
 
+    public VideoDataResponse getVideo(Integer videoId) {
+        Video video = videoRepository.findById(videoId).orElse(null);
+
+        if (video == null) {
+            throw new RuntimeException("Video not found");
+        }
+
+        try {
+            GetObjectResponse response = minioClient.getObject(
+                    GetObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(getFileName(video.getVideoUrl()))
+                            .build()
+            );
+
+            byte[] data = response.readAllBytes();
+
+            response.close();
+            return VideoDataResponse.builder()
+                    .videoData(data)
+                    .videoUrl(video.getVideoUrl())
+                    .build();
+
+        } catch (MinioException | InvalidKeyException | IOException | NoSuchAlgorithmException e) {
+            throw new RuntimeException("Failed to get video", e);
+        }
+    }
+
     private String getFileExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf("."));
+    }
+
+    private String getFileName(String filePath) {
+        return filePath.substring(filePath.lastIndexOf("/"));
     }
 }

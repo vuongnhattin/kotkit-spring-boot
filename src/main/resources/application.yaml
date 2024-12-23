@@ -1,11 +1,14 @@
 spring:
   application:
     name: Kotkit
+  web:
+    resources:
+      static-locations: classpath:/nonexistent/
 
   datasource:
-      url: jdbc:mysql://localhost:3308/kotkit
-      username: root
-      password: 123
+    url: jdbc:mysql://localhost:3308/kotkit
+    username: root
+    password: 123
 
   jpa:
     hibernate:
