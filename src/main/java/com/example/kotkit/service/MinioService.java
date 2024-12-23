@@ -31,7 +31,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MinioService {
     private final MinioClient minioClient;
-    private final VideoService videoService;
     private final VideoRepository videoRepository;
 
     @Value("${minio.bucket}")

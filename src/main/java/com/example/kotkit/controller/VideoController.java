@@ -41,8 +41,8 @@ public class VideoController {
 
     @Operation(summary = "Upload video")
     @PostMapping("/")
-    public ApiResponse<VideoResponse> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam("video") VideoInput video) {
-        return new ApiResponse<>(minioService.uploadVideo(file, video));
+    public ApiResponse<VideoResponse> uploadVideo(@Valid VideoInput videoInput) {
+        return new ApiResponse<>(videoService.uploadVideo(videoInput));
     }
 
     // Cai nay khong dung nua de do di nhe
