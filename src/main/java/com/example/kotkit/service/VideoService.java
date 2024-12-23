@@ -64,13 +64,13 @@ public class VideoService {
 
         Video video = new Video();
 
-        video.setCreatorId(videoInput.getCreatorId());
+        video.setCreatorId(userService.getMeId());
         video.setTitle(videoInput.getTitle());
         video.setMode(videoInput.getMode());
         video.setVideoUrl(minioService.upload(videoInput.getFile()));
 
         videoRepository.save(video);
-        Users user = userService.getUserById(video.getCreatorId());
+        Users user = userService.getMe();
 
         return new VideoResponse(video, user);
     }
