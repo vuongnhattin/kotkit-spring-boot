@@ -1,25 +1,49 @@
 package com.example.kotkit.service;
 
+import com.example.kotkit.dto.response.VideoDataResponse;
 import com.example.kotkit.dto.input.VideoInput;
 import com.example.kotkit.dto.response.VideoResponse;
 import com.example.kotkit.entity.Users;
+import com.example.kotkit.entity.Users;
+import com.example.kotkit.entity.Video;
 import com.example.kotkit.entity.Video;
 import com.example.kotkit.entity.enums.VideoMode;
 import com.example.kotkit.exception.AppException;
 import com.example.kotkit.exception.ErrorCode;
 import com.example.kotkit.repository.VideoRepository;
+import io.minio.GetObjectArgs;
+import io.minio.GetObjectResponse;
+import io.minio.MinioClient;
+import io.minio.errors.MinioException;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class VideoService {
+    public static final String VIDEO_NOT_FOUND = "VIDEO_NOT_FOUND";
     private final VideoRepository videoRepository;
     private final UserService userService;
     private final FriendshipService friendshipService;
+    private final MinioClient minioClient;
+
+    @Value("${minio.bucket}")
+    private String bucketName;
+
+    public Video findVideoById(Integer videoId) {
+        return videoRepository.findById(videoId).orElseThrow(() -> new AppException(404, VIDEO_NOT_FOUND));
+    }
     private final MinioService minioService;
 
     public List<VideoResponse> getVideos(int creatorId, String mode) {
@@ -73,5 +97,31 @@ public class VideoService {
         Users user = userService.getMe();
 
         return new VideoResponse(video, user);
+    }
+
+    public VideoResponse uploadVideo(Video video) {
+        videoRepository.save(video);
+        Users user = userService.getUserById(video.getCreatorId());
+        return new VideoResponse(video, user);
+    }
+
+    public List<VideoResponse> getAllVideos() {
+        return videoRepository.getAllVideos();
+    }
+
+    public Resource getVideoResource(Integer videoId) {
+        Video video = findVideoById(videoId);
+        try {
+            GetObjectResponse response = minioClient.getObject(
+                    GetObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(video.getVideoUrl())
+                            .build()
+            );
+
+            return new InputStreamResource(response);
+        } catch (MinioException | InvalidKeyException | IOException | NoSuchAlgorithmException e) {
+            throw new RuntimeException("Failed to get video", e);
+        }
     }
 }
