@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class VideoDataResponse {
     private byte[] videoData;
-    private String fileName;
+    private String videoUrl;
     private Long size;
 }

@@ -20,7 +20,7 @@ public class Video {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer videoId;
     private String title;
-    private String minioObjectName;
+    private String videoUrl;
     private String thumbnail = "";
     private Long numberOfLikes = 0L;
     private Long numberOfComments = 0L;

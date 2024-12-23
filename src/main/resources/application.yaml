@@ -23,4 +23,4 @@ minio:
   endpoint: http://localhost:9000
   accessKey: minio_access_key
   secretKey: minio_secret_key
-  bucket: kotkit
+  bucket: videos
