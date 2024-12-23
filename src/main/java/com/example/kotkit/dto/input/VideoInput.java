@@ -16,8 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class VideoInput {
     @NotBlank
     private String title;
-    @NotNull
-    private Integer creatorId;
     private VideoMode mode;
     @NotNull
     private MultipartFile file;
