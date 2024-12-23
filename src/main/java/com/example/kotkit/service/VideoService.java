@@ -1,7 +1,9 @@
 package com.example.kotkit.service;
 
+import com.example.kotkit.dto.response.VideoDataResponse;
 import com.example.kotkit.dto.input.VideoInput;
 import com.example.kotkit.dto.response.VideoResponse;
+import com.example.kotkit.entity.Users;
 import com.example.kotkit.entity.Users;
 import com.example.kotkit.entity.Video;
 import com.example.kotkit.entity.Video;
@@ -14,6 +16,7 @@ import io.minio.GetObjectResponse;
 import io.minio.MinioClient;
 import io.minio.errors.MinioException;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -23,17 +26,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class VideoService {
+    public static final String VIDEO_NOT_FOUND = "VIDEO_NOT_FOUND";
     private final VideoRepository videoRepository;
     private final UserService userService;
     private final FriendshipService friendshipService;
     private final MinioClient minioClient;
 
-    @Value("${minio.bucket-name}")
+    @Value("${minio.bucket}")
     private String bucketName;
 
     public Video findVideoById(Integer videoId) {
@@ -94,10 +99,14 @@ public class VideoService {
         return new VideoResponse(video, user);
     }
 
+    public VideoResponse uploadVideo(Video video) {
+        videoRepository.save(video);
+        Users user = userService.getUserById(video.getCreatorId());
+        return new VideoResponse(video, user);
+    }
+
     public List<VideoResponse> getAllVideos() {
-        List<VideoResponse> videos;
-        videos = videoRepository.getAllVideos();
-        return videos;
+        return videoRepository.getAllVideos();
     }
 
     public Resource getVideoResource(Integer videoId) {
@@ -106,7 +115,7 @@ public class VideoService {
             GetObjectResponse response = minioClient.getObject(
                     GetObjectArgs.builder()
                             .bucket(bucketName)
-                            .object(video.getMinioObjectName())
+                            .object(video.getVideoUrl())
                             .build()
             );
 
