@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/comment")
 @RequiredArgsConstructor
@@ -29,6 +31,15 @@ public class CommentController {
     ){
         commentService.delete(videoId, commentId);
         return ApiResponse.<Void>builder()
+                .build();
+    }
+
+    @GetMapping("/{videoId}")
+    public ApiResponse<List<CommentResponse>> getAllCommentInVideo(
+            @PathVariable("videoId") Integer videoId
+    ){
+        return ApiResponse.<List<CommentResponse>>builder()
+                .data(commentService.getAllInVideo(videoId))
                 .build();
     }
 }

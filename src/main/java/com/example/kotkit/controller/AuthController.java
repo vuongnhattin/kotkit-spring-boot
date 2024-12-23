@@ -28,6 +28,7 @@ public class AuthController {
         return authenticationService.register(registerUserDto);
     }
 
+    // eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZ3VAZW1haWwuY29tIiwiaWF0IjoxNzM0NzQyOTg0LCJleHAiOjE3NDQ3NDI5ODR9.0KVaEmxH7AtRS7APLf-2_NX5lYmqB916DsFJToRgD4g
     @Operation(summary = "Login to the system")
     @PostMapping("login")
     public LoginResponse login(@RequestBody @Valid LoginInput loginUserDto) {

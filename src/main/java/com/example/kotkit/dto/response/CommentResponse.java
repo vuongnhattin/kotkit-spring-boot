@@ -14,6 +14,8 @@ public class CommentResponse {
     private Integer authorId;
     private Integer videoId;
     private String comment;
+    private String avatar;
+    private String fullName;
     private String createdAt;
     private String updatedAt;
 }

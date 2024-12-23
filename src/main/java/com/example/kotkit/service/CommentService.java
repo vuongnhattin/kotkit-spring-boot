@@ -16,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -36,9 +38,13 @@ public class CommentService {
         videoService.increaseNumberOfComments(videoId, 1);
         CommentResponse commentResponse = CommentResponse.builder().build();
         modelMapper.map(comment, commentResponse);
+        commentResponse.setAvatar(user.getAvatar());
+        commentResponse.setFullName(user.getFullName());
         return commentResponse;
     }
-
+    public List<CommentResponse> getAllInVideo(Integer videoId){
+        return commentRepository.findAllByVideoId(videoId);
+    }
     public void delete(Integer videoId, Integer commentId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         var user = (Users) authentication.getPrincipal();
