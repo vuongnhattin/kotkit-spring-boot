@@ -1,5 +1,6 @@
 package com.example.kotkit.dto.input;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Data
