@@ -1,11 +1,17 @@
 package com.example.kotkit.controller;
 
+import com.example.kotkit.dto.input.VideoInput;
 import com.example.kotkit.dto.response.ApiResponse;
 import com.example.kotkit.dto.response.VideoResponse;
+import com.example.kotkit.entity.Video;
+import com.example.kotkit.service.MinioService;
 import com.example.kotkit.service.VideoService;
 import io.micrometer.common.util.StringUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@RequestMapping("video")
+@RequestMapping("videos")
 @RestController
 @RequiredArgsConstructor
 public class VideoController {
@@ -25,15 +31,17 @@ public class VideoController {
         return new ApiResponse<>(videoService.getVideos(userId, mode));
     }
 
+    @Operation(summary = "Upload video")
+    @PostMapping("upload")
+    public ApiResponse<VideoResponse> uploadVideo(@Valid VideoInput videoInput) {
+        return new ApiResponse<>(videoService.uploadVideo(videoInput));
+    }
+
     @Operation(summary = "Get list of all videos - for testing")
     @GetMapping("all-videos")
     public ApiResponse<List<VideoResponse>> getAllVideos() {
         return new ApiResponse<>(videoService.getAllVideos());
     }
-
-    @Operation(summary = "Get one video")
-    @PostMapping("{videoId}")
-    public ApiResponse<Vi>
 
     private ResourceRegion resourceRegion(Resource video, String httpRangeList) throws IOException {
         long contentLength = video.contentLength();

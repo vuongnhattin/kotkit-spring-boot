@@ -23,4 +23,8 @@ services:
     command: server --console-address ":9001" /data
 
 volumes:
+<<<<<<< HEAD
   minio_storage:
+=======
+  minio_storage:
+>>>>>>> refs/remotes/origin/master
