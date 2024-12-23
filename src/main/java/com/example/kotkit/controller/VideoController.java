@@ -19,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VideoController {
     private final VideoService videoService;
-    private final MinioService minioService;
 
     @Operation(summary = "Get list of videos of a user")
     @GetMapping("videos-of-user")
@@ -28,7 +27,7 @@ public class VideoController {
     }
 
     @Operation(summary = "Upload video")
-    @PostMapping("/")
+    @PostMapping("upload")
     public ApiResponse<VideoResponse> uploadVideo(@Valid VideoInput videoInput) {
         return new ApiResponse<>(videoService.uploadVideo(videoInput));
     }

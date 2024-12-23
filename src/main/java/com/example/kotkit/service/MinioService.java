@@ -66,27 +66,34 @@ public class MinioService {
 
     @SneakyThrows
     public String upload(@NonNull final MultipartFile file) {
-        final var fileName = UUID.randomUUID().toString();
+        final String contentType = file.getContentType();
+
+        String folderName = contentType.substring(0, contentType.lastIndexOf("/"));
+        String fileFormat = contentType.substring(contentType.lastIndexOf("/") + 1);
+
+        if (folderName.equals("video") && fileFormat.equals("x-matroska")) {
+            fileFormat = "mp4";
+        }
+
+        final var fileName = folderName + "/" + UUID.randomUUID() + "." + fileFormat;
+
         try {
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(bucketName)
                             .object(fileName)
-                            .contentType(Objects.isNull(file.getContentType()) ? "image/png; image/jpg;" : file.getContentType())
+                            .contentType(Objects.isNull(file.getContentType()) ? "video/mp4;" : file.getContentType())
                             .stream(file.getInputStream(), file.getSize(), -1)
                             .build()
             );
         } catch (Exception ex) {
             log.error("Error saving file \n {} ", ex.getMessage());
-            throw new AppException(400, "Unable to upload file");
+            throw new AppException(500, "Unable to upload file");
         }
-         return minioClient.getPresignedObjectUrl(
-                io.minio.GetPresignedObjectUrlArgs.builder()
-                        .method(io.minio.http.Method.GET)
-                        .bucket(bucketName)
-                        .object(fileName)
-                        .build()
-         );
+
+        final var videoUrl = "/api/v1/buckets/kotkit/objects/download?prefix=%s&version_id=null".formatted(fileName);
+
+        return videoUrl;
     }
 
     private String getFileExtension(String fileName) {
