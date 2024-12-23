@@ -8,6 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class LoginInput {
+    @NotBlank(message = "EMAIL_REQUIRED")
     private String email;
+    @NotBlank(message = "PASSWORD_REQUIRED")
     private String password;
 }
