@@ -17,6 +17,7 @@ public class VideoInput {
     @NotBlank
     private String title;
     private VideoMode mode;
+    private MultipartFile thumbnail;
     @NotNull
-    private MultipartFile file;
+    private MultipartFile video;
 }
