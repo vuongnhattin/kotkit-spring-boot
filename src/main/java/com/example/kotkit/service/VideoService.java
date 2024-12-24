@@ -63,6 +63,7 @@ public class VideoService {
 
         return videos;
     }
+
     public void increaseNumberOfComments(Integer videoId, Integer quantity){
         if(quantity < 0) return;
         var video = videoRepository.findById(videoId)
@@ -104,6 +105,14 @@ public class VideoService {
         videoRepository.save(video);
         Users user = userService.getUserById(video.getCreatorId());
         return new VideoResponse(video, user);
+    }
+
+    public List<VideoResponse> getAllPublicVideos() {
+        return videoRepository.getAllPublicVideos();
+    }
+
+    public List<VideoResponse> getAllPrivateVideos() {
+        return videoRepository.getAllPrivateVideos();
     }
 
     public List<VideoResponse> getAllVideos() {
