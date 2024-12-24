@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class CommentService {
     CommentRepository commentRepository;
-    VideoRepository videoRepository;
     VideoService videoService;
     ModelMapper modelMapper;
     public CommentResponse create(CommentInput input, Integer videoId) {

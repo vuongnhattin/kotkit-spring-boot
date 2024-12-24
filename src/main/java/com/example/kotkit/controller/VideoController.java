@@ -40,7 +40,7 @@ public class VideoController {
     }
 
     @Operation(summary = "Upload video")
-    @PostMapping("/")
+    @PostMapping("upload")
     public ApiResponse<VideoResponse> uploadVideo(@Valid VideoInput videoInput) {
         return new ApiResponse<>(videoService.uploadVideo(videoInput));
     }
