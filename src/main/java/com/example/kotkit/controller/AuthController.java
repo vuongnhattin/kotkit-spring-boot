@@ -25,8 +25,9 @@ public class AuthController {
 
     @Operation(summary = "Register a new user")
     @PostMapping("register")
-    public Users register(@RequestBody @Valid RegisterInput registerUserDto) {
-        return authenticationService.register(registerUserDto);
+    public ApiResponse<Void> register(@RequestBody @Valid RegisterInput registerUserDto) {
+        authenticationService.register(registerUserDto);
+        return new ApiResponse<>();
     }
 
     @Operation(summary = "Login to the system")
