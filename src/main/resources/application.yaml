@@ -10,6 +10,12 @@ spring:
     username: root
     password: 123
 
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+      enabled: true
+
   jpa:
     hibernate:
       ddl-auto: none

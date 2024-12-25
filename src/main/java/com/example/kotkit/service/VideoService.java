@@ -31,6 +31,7 @@ public class VideoService {
     private final UserService userService;
     private final FriendshipService friendshipService;
     private final MinioClient minioClient;
+    private final MinioService minioService;
 
     @Value("${minio.bucket}")
     private String bucketName;
@@ -38,7 +39,6 @@ public class VideoService {
     public Video findVideoById(Integer videoId) {
         return videoRepository.findById(videoId).orElseThrow(() -> new AppException(404, VIDEO_NOT_FOUND));
     }
-    private final MinioService minioService;
 
     public List<VideoResponse> getVideos(int creatorId, String mode) {
         List<VideoResponse> videos;
@@ -57,6 +57,7 @@ public class VideoService {
 
         return videos;
     }
+
     public void increaseNumberOfComments(Integer videoId, Integer quantity){
         if(quantity < 0) return;
         var video = videoRepository.findById(videoId)
@@ -76,7 +77,7 @@ public class VideoService {
     }
 
     public VideoResponse uploadVideo(VideoInput videoInput) {
-        if (videoInput.getFile().isEmpty()) {
+        if (videoInput.getVideo().isEmpty() || videoInput.getThumbnail().isEmpty()) {
             throw new AppException(400, "Invalid file");
         }
 
@@ -85,7 +86,8 @@ public class VideoService {
         video.setCreatorId(userService.getMeId());
         video.setTitle(videoInput.getTitle());
         video.setMode(videoInput.getMode());
-        video.setVideoUrl(minioService.upload(videoInput.getFile()));
+        video.setVideoUrl(minioService.upload(videoInput.getVideo()));
+        video.setThumbnail(minioService.upload(videoInput.getThumbnail()));
 
         videoRepository.save(video);
         Users user = userService.getMe();
@@ -97,6 +99,14 @@ public class VideoService {
         videoRepository.save(video);
         Users user = userService.getUserById(video.getCreatorId());
         return new VideoResponse(video, user);
+    }
+
+    public List<VideoResponse> getAllPublicVideos() {
+        return videoRepository.getAllPublicVideos();
+    }
+
+    public List<VideoResponse> getAllPrivateVideos() {
+        return videoRepository.getAllPrivateVideos();
     }
 
     public List<VideoResponse> getAllVideos() {

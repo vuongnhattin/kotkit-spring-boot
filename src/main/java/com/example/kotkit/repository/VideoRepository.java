@@ -31,6 +31,7 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
             """)
     List<VideoResponse> searchVideos(@Param("query") String query);
 
+    // Cai nay Tin viet chua can dung toi
     @Query("""
             select new com.example.kotkit.dto.response.VideoResponse(
                 v, u
@@ -53,6 +54,26 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
             """)
     List<VideoResponse> getPublicVideos(@Param("creatorId") int creatorId);
 
+    @Query("""
+            select new com.example.kotkit.dto.response.VideoResponse(
+                v, u
+            )
+            from Video v, Users u
+            where v.creatorId = u.userId
+            and v.mode = 'PUBLIC'
+            """)
+    List<VideoResponse> getAllPublicVideos();
+
+    @Query("""
+            select new com.example.kotkit.dto.response.VideoResponse(
+                v, u
+            )
+            from Video v, Users u
+            where v.creatorId = u.userId
+            and v.mode = 'PRIVATE'
+            """)
+    List<VideoResponse> getAllPrivateVideos();
+
     // Sau nay can sua
     @Query("""
             select new com.example.kotkit.dto.response.VideoResponse(
@@ -60,6 +81,7 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
                 u
             )
             from Video v, Users u
+            where v.creatorId = u.userId
             """)
     // where v.creatorId = u.userId
     List<VideoResponse> getAllVideos();

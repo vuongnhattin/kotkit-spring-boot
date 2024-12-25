@@ -41,16 +41,28 @@ public class VideoController {
     }
 
     @Operation(summary = "Upload video")
-    @PostMapping("/")
+    @PostMapping("upload")
     public ApiResponse<VideoResponse> uploadVideo(@Valid VideoInput videoInput) {
         return new ApiResponse<>(videoService.uploadVideo(videoInput));
     }
 
-    // Cai nay khong dung nua de do di nhe
+    // Cai nay khong dung nua de do di nhe - Dung de tai mot video tu server ve client
     @Operation(summary = "Get one video")
     @GetMapping("/{videoId}")
     public ApiResponse<VideoDataResponse> getVideo(@PathVariable Integer videoId) {
         return new ApiResponse<>(minioService.getVideo(videoId));
+    }
+
+    @Operation(summary = "Get list of all public videos")
+    @GetMapping("public-videos")
+    public ApiResponse<List<VideoResponse>> getPublicVideos() {
+        return new ApiResponse<>(videoService.getAllPublicVideos());
+    }
+
+    @Operation(summary = "Get list of all private videos")
+    @GetMapping("private-videos")
+    public ApiResponse<List<VideoResponse>> getPrivateVideos() {
+        return new ApiResponse<>(videoService.getAllPrivateVideos());
     }
 
     @Operation(summary = "Get list of all videos - for testing")
