@@ -39,7 +39,7 @@ CREATE TABLE video
     number_of_views    INT       DEFAULT 0,
     number_of_likes    INT       DEFAULT 0,
     number_of_comments INT       DEFAULT 0,
-    mode               ENUM ('PUBLIC', 'PRIVATE'),
+    mode               ENUM ('PUBLIC', 'PRIVATE', 'FRIEND'),
     created_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (creator_id) REFERENCES users (user_id) ON DELETE SET NULL
