@@ -7,14 +7,6 @@ VALUES
 ('user4@example.com', 'Alice Johnson', 'passwordabc', 'avatar4.png', '1988-04-04', 'FEMALE', 1, 0, 0, 1, 'USER'),
 ('user5@example.com', 'Bob Brown', 'passworddef', 'avatar5.png', '1996-05-05', 'MALE', 0, 0, 0, 0, 'USER');
 
--- Insert into friendship
-INSERT INTO friendship (user1_id, user2_id, status)
-VALUES
-(1, 2, 'FRIEND'),
-(2, 3, 'SENT'),
-(3, 4, 'RECEIVED'),
-(4, 5, 'FRIEND'),
-(1, 3, 'FRIEND');
 
 -- Insert into video
 INSERT INTO video (creator_id, title, video_url, thumbnail, number_of_views, number_of_likes, number_of_comments, mode)

@@ -9,6 +9,7 @@ import com.example.kotkit.service.MinioService;
 import com.example.kotkit.service.VideoService;
 import io.micrometer.common.util.StringUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -72,5 +73,12 @@ public class VideoController {
                 : Math.min(start + 1024 * 1024, contentLength - 1);
 
         return new ResourceRegion(video, start, end - start + 1);
+    }
+    @Operation(summary = "Search Video")
+    @GetMapping("/search")
+    public ApiResponse<List<VideoResponse>> searchVideos(
+            @RequestParam(value = "q") @Nullable String query
+    ) {
+        return new ApiResponse<>(videoService.searchVideos(query));
     }
 }

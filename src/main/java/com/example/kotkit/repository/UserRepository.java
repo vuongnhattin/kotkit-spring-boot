@@ -17,7 +17,9 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
     @Query("""
             select new com.example.kotkit.dto.response.UserDetailsResponse(
                 u,
-                (select f.status from Friendship f where f.user2Id = u.userId and f.user1Id = :meId)
+                (select f.status from Friendship f 
+                where (f.user2Id = u.userId and f.user1Id = :meId)
+                or (f.user1Id = u.userId and f.user2Id = :meId))
             )
             from Users u
             where lower(u.email) like lower(concat('%', :query, '%'))

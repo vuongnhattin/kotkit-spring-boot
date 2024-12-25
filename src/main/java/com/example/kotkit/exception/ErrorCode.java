@@ -3,7 +3,7 @@ package com.example.kotkit.exception;
 import org.springframework.http.HttpStatus;
 
 public enum ErrorCode {
-    VIDEO_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "Video not found");
+    VIDEO_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "VIDEO_NOT_FOUND");
 
     ErrorCode(int status, String code) {
         this.code = code;
