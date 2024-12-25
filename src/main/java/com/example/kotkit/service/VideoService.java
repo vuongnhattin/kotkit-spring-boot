@@ -1,11 +1,8 @@
 package com.example.kotkit.service;
 
-import com.example.kotkit.dto.response.VideoDataResponse;
 import com.example.kotkit.dto.input.VideoInput;
 import com.example.kotkit.dto.response.VideoResponse;
 import com.example.kotkit.entity.Users;
-import com.example.kotkit.entity.Users;
-import com.example.kotkit.entity.Video;
 import com.example.kotkit.entity.Video;
 import com.example.kotkit.entity.enums.VideoMode;
 import com.example.kotkit.exception.AppException;
@@ -16,17 +13,14 @@ import io.minio.GetObjectResponse;
 import io.minio.MinioClient;
 import io.minio.errors.MinioException;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -133,5 +127,9 @@ public class VideoService {
         } catch (MinioException | InvalidKeyException | IOException | NoSuchAlgorithmException e) {
             throw new RuntimeException("Failed to get video", e);
         }
+    }
+
+    public List<VideoResponse> searchVideos(String query) {
+        return videoRepository.searchVideos(query);
     }
 }

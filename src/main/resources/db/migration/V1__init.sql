@@ -25,7 +25,8 @@ CREATE TABLE friendship
     created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user1_id) REFERENCES users (user_id) ON DELETE SET NULL,
-    FOREIGN KEY (user2_id) REFERENCES users (user_id) ON DELETE SET NULL
+    FOREIGN KEY (user2_id) REFERENCES users (user_id) ON DELETE SET NULL,
+    UNIQUE (user1_id, user2_id)
 );
 
 CREATE TABLE video
