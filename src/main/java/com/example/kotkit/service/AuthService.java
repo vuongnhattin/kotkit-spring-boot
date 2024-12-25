@@ -22,9 +22,9 @@ public class AuthService {
 
     private final ModelMapper mapper;
 
-    public Users register(RegisterInput input) {
+    public void register(RegisterInput input) {
         if (userService.existsByEmail(input.getEmail())) {
-            throw new AppException(400, "USERNAME_DUPLICATED");
+            throw new AppException(400, "EMAIL_DUPLICATED");
         }
 
         Users user = mapper.map(input, Users.class);
@@ -32,7 +32,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(input.getPassword()));
         user.setRoles("ROLE_USER");
 
-        return userService.createUser(user);
+        userService.createUser(user);
     }
 
     public Users login(LoginInput input) {
