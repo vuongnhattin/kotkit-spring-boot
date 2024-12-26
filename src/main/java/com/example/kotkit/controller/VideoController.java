@@ -2,11 +2,8 @@ package com.example.kotkit.controller;
 
 import com.example.kotkit.dto.input.VideoInput;
 import com.example.kotkit.dto.response.ApiResponse;
-import com.example.kotkit.dto.response.SearchVideoResponse;
 import com.example.kotkit.dto.response.VideoDataResponse;
 import com.example.kotkit.dto.response.VideoResponse;
-import com.example.kotkit.entity.Video;
-
 import com.example.kotkit.service.MinioService;
 import com.example.kotkit.service.VideoService;
 import io.micrometer.common.util.StringUtils;
@@ -14,17 +11,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourceRegion;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -90,7 +79,7 @@ public class VideoController {
     }
     @Operation(summary = "Search Video")
     @GetMapping("/search")
-    public ApiResponse<List<SearchVideoResponse>> searchVideos(
+    public ApiResponse<List<VideoResponse>> searchVideos(
             @RequestParam(value = "q") @Nullable String query
     ) {
         return new ApiResponse<>(videoService.searchVideos(query));
