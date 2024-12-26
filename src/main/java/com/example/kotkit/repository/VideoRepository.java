@@ -1,5 +1,6 @@
 package com.example.kotkit.repository;
 
+import com.example.kotkit.dto.response.SearchVideoResponse;
 import com.example.kotkit.dto.response.VideoResponse;
 import com.example.kotkit.entity.Video;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,7 +30,7 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
             where lower(v.title) like lower(concat('%', :query, '%'))
             and v.creatorId = u.userId
             """)
-    List<VideoResponse> searchVideos(@Param("query") String query);
+    List<SearchVideoResponse> searchVideos(@Param("query") String query);
 
     // Cai nay Tin viet chua can dung toi
     @Query("""
