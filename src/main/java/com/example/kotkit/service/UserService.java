@@ -56,7 +56,7 @@ public class UserService {
     public List<UserDetailsResponse> searchUsers(String query) {
         int meId = getMeId();
 
-        if (query == null) {
+        if (query == null || query.isEmpty()) {
             return userRepository.getAllUsers(meId);
         }
 
