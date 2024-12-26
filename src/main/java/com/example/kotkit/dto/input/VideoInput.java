@@ -14,10 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @Builder
 public class VideoInput {
-    @NotBlank
+    @NotBlank(message = "TITLE_REQUIRED")
     private String title;
+    @NotNull(message = "VIDEO_MODE_REQUIRED")
     private VideoMode mode;
+    @NotNull(message = "THUMBNAIL_REQUIRED")
     private MultipartFile thumbnail;
-    @NotNull
+    @NotNull(message = "VIDEO_REQUIRED")
     private MultipartFile video;
 }

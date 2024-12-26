@@ -78,10 +78,6 @@ public class VideoService {
     }
 
     public VideoResponse uploadVideo(VideoInput videoInput) {
-        if (videoInput.getVideo().isEmpty() || videoInput.getThumbnail().isEmpty()) {
-            throw new AppException(400, "Invalid file");
-        }
-
         Video video = new Video();
 
         video.setCreatorId(userService.getMeId());
