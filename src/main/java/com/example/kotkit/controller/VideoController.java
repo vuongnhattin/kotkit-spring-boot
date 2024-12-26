@@ -2,9 +2,11 @@ package com.example.kotkit.controller;
 
 import com.example.kotkit.dto.input.VideoInput;
 import com.example.kotkit.dto.response.ApiResponse;
+import com.example.kotkit.dto.response.SearchVideoResponse;
 import com.example.kotkit.dto.response.VideoDataResponse;
 import com.example.kotkit.dto.response.VideoResponse;
 import com.example.kotkit.entity.Video;
+
 import com.example.kotkit.service.MinioService;
 import com.example.kotkit.service.VideoService;
 import io.micrometer.common.util.StringUtils;
@@ -88,7 +90,7 @@ public class VideoController {
     }
     @Operation(summary = "Search Video")
     @GetMapping("/search")
-    public ApiResponse<List<VideoResponse>> searchVideos(
+    public ApiResponse<List<SearchVideoResponse>> searchVideos(
             @RequestParam(value = "q") @Nullable String query
     ) {
         return new ApiResponse<>(videoService.searchVideos(query));

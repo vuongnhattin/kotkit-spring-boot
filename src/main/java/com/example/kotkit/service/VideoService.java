@@ -1,6 +1,7 @@
 package com.example.kotkit.service;
 
 import com.example.kotkit.dto.input.VideoInput;
+import com.example.kotkit.dto.response.SearchVideoResponse;
 import com.example.kotkit.dto.response.VideoResponse;
 import com.example.kotkit.entity.Users;
 import com.example.kotkit.entity.Video;
@@ -125,7 +126,7 @@ public class VideoService {
         }
     }
 
-    public List<VideoResponse> searchVideos(String query) {
+    public List<SearchVideoResponse> searchVideos(String query) {
         return videoRepository.searchVideos(query);
     }
 }
