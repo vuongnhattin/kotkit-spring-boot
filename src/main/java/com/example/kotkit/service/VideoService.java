@@ -6,7 +6,6 @@ import com.example.kotkit.entity.Users;
 import com.example.kotkit.entity.Video;
 import com.example.kotkit.entity.enums.VideoMode;
 import com.example.kotkit.exception.AppException;
-import com.example.kotkit.exception.ErrorCode;
 import com.example.kotkit.repository.VideoRepository;
 import io.minio.GetObjectArgs;
 import io.minio.GetObjectResponse;
@@ -61,14 +60,14 @@ public class VideoService {
     public void increaseNumberOfComments(Integer videoId, Integer quantity){
         if(quantity < 0) return;
         var video = videoRepository.findById(videoId)
-                .orElseThrow(() -> new AppException(ErrorCode.VIDEO_NOT_FOUND.getStatus(), ErrorCode.VIDEO_NOT_FOUND.getCode()));
+                .orElseThrow(() -> new AppException(404, VIDEO_NOT_FOUND));
         video.setNumberOfComments(video.getNumberOfComments() + quantity);
         video = videoRepository.save(video);
     }
     public void decreaseNumberOfComments(Integer videoId, Integer quantity){
         if(quantity < 0) return;
         var video = videoRepository.findById(videoId)
-                .orElseThrow(() -> new AppException(ErrorCode.VIDEO_NOT_FOUND.getStatus(), ErrorCode.VIDEO_NOT_FOUND.getCode()));
+                .orElseThrow(() -> new AppException(404, VIDEO_NOT_FOUND));
         if(video.getNumberOfComments() >= quantity)
             video.setNumberOfComments(video.getNumberOfComments() - quantity);
         else
