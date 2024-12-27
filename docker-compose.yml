@@ -3,26 +3,31 @@ services:
     image: mysql:8
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      - "3308:3306"
+      - "${MYSQL_PORT}:3306"
     volumes:
       - ./mysql:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    env_file:
+      - .env
 
   minio:
     image: minio/minio
     container_name: minio
     restart: always
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "${MINIO_PORT_1}:9000"
+      - "${MINIO_PORT_2}:9001"
     volumes:
       - minio_storage:/data
     environment:
-      MINIO_ACCESS_KEY: minio_access_key
-      MINIO_SECRET_KEY: minio_secret_key
-    command: server --console-address ":9001" /data
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+    command: server --console-address ":${MINIO_PORT_2}" /data
+
+    env_file:
+      - .env
 
 volumes:
   minio_storage:

@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userId;
+    private Integer userId;
     private String email;
     private String fullName;
     private String password;

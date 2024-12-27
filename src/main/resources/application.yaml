@@ -6,9 +6,9 @@ spring:
       static-locations: classpath:/nonexistent/
 
   datasource:
-    url: jdbc:mysql://localhost:3308/kotkit
+    url: jdbc:mysql://localhost:${MYSQL_PORT}/kotkit
     username: root
-    password: 123
+    password: ${MYSQL_ROOT_PASSWORD}
 
   servlet:
     multipart:
@@ -22,11 +22,11 @@ spring:
 
 security:
   jwt:
-    secret-key: ZCQl6X6kQnI8PElWxA547cvvvzZSeRhQAzDe7ZYpOI0=
-    expiration-time: 9999999999
+    secret-key: ${JWT_SECRET_KEY}
+    expiration-time: ${JWT_EXPIRATION}
 
 minio:
-  endpoint: http://localhost:9000
-  accessKey: minio_access_key
-  secretKey: minio_secret_key
+  endpoint: http://localhost:${MINIO_PORT_1}
+  accessKey: ${MINIO_ACCESS_KEY}
+  secretKey: ${MINIO_SECRET_KEY}
   bucket: kotkit
