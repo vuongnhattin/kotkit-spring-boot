@@ -1,11 +1,11 @@
 -- Insert into users
 INSERT INTO users (email, full_name, password, avatar, birthday, gender, number_of_friends, number_of_videos, is_blocked, is_verified, roles)
 VALUES
-('user1@example.com', 'John Doe', 'password123', 'avatar1.png', '1990-01-01', 'MALE', 3, 2, 0, 1, 'USER'),
-('user2@example.com', 'Jane Smith', 'password456', 'avatar2.png', '1992-02-02', 'FEMALE', 2, 1, 0, 1, 'USER'),
-('user3@example.com', 'Sam Taylor', 'password789', 'avatar3.png', '1994-03-03', 'OTHER', 1, 1, 0, 0, 'ADMIN'),
-('user4@example.com', 'Alice Johnson', 'passwordabc', 'avatar4.png', '1988-04-04', 'FEMALE', 1, 0, 0, 1, 'USER'),
-('user5@example.com', 'Bob Brown', 'passworddef', 'avatar5.png', '1996-05-05', 'MALE', 0, 0, 0, 0, 'USER');
+('user1', 'Vương Nhật Tín', '$2a$10$dgI.Y4NnUbv6gJxGytQmHe8PZOjgsunAovl42cSIDyvZEQSagpSO6', 'https://static.vecteezy.com/system/resources/previews/002/002/403/non_2x/man-with-beard-avatar-character-isolated-icon-free-vector.jpg', '1990-01-01', 'MALE', 0, 2, 0, 1, 'USER'),
+('user2', 'Nguyễn Công Long', '$2a$10$dgI.Y4NnUbv6gJxGytQmHe8PZOjgsunAovl42cSIDyvZEQSagpSO6', 'https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png', '1992-02-02', 'FEMALE', 0, 2, 0, 1, 'USER'),
+('user3', 'Phạm Minh Tân', '$2a$10$dgI.Y4NnUbv6gJxGytQmHe8PZOjgsunAovl42cSIDyvZEQSagpSO6', 'https://img.freepik.com/photos-premium/elevez-votre-marque-avatar-amical-qui-reflete-professionnalisme-ideal-pour-directeurs-ventes_1283595-18531.jpg?semt=ais_hybrid', '1994-03-03', 'OTHER', 0, 1, 0, 0, 'ADMIN'),
+('user4', 'Trần Như Anh Kiệt', '$2a$10$dgI.Y4NnUbv6gJxGytQmHe8PZOjgsunAovl42cSIDyvZEQSagpSO6', 'https://static.vecteezy.com/system/resources/thumbnails/004/899/680/small_2x/beautiful-blonde-woman-with-makeup-avatar-for-a-beauty-salon-illustration-in-the-cartoon-style-vector.jpg', '1988-04-04', 'FEMALE', 0, 0, 0, 1, 'USER'),
+('user5', 'Đỗ Phú Quí', '$2a$10$dgI.Y4NnUbv6gJxGytQmHe8PZOjgsunAovl42cSIDyvZEQSagpSO6', 'https://img.freepik.com/premium-vector/man-women-different-avatars-illustration-vector-art-design_666656-112.jpg', '1996-05-05', 'MALE', 0, 0, 0, 0, 'USER');
 
 
 -- Insert into video

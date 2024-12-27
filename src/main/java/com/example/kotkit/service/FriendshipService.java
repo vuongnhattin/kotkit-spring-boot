@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class FriendshipService {
-    public static final String FRIENDSHIP_FAILED = "FAILED";
+    public static final String FRIENDSHIP_FAILED = "FRIENDSHIP_FAILED";
     private final FriendshipRepository friendshipRepository;
     private final UserService userService;
     private final ModelMapper mapper;

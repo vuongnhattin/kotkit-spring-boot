@@ -37,7 +37,7 @@ public class AuthService {
 
     public Users login(LoginInput input) {
         if (!userService.existsByEmail(input.getEmail())) {
-            throw new AppException(400, "USER_NOT_FOUND");
+            throw new AppException(400, "EMAIL_NOT_FOUND");
         }
 
         try {
