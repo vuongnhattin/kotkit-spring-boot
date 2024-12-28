@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class UserService {
     public static final String USER_NOT_FOUND = "USER_NOT_FOUND";
     private final UserRepository userRepository;
     private final ModelMapper mapper;
+    private final MinioService minioService;
 
     public Users findByUsername(String username) {
         return userRepository.findByEmail(username).orElseThrow(() -> new AppException(404, USER_NOT_FOUND));
@@ -77,5 +79,11 @@ public class UserService {
         Users user = getUserById(userId);
         user.setNumberOfFriends(user.getNumberOfFriends() - 1);
         userRepository.save(user);
+    }
+
+    public Users updateAvatar(MultipartFile avatar) {
+        Users user = getMe();
+        user.setAvatar(minioService.upload(avatar));
+        return userRepository.save(user);
     }
 }

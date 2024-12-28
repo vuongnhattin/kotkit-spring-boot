@@ -90,12 +90,6 @@ public class VideoService {
         return new VideoResponse(video, user);
     }
 
-    public VideoResponse uploadVideo(Video video) {
-        videoRepository.save(video);
-        Users user = userService.getUserById(video.getCreatorId());
-        return new VideoResponse(video, user);
-    }
-
     public List<VideoResponse> getAllPublicVideos() {
         return videoRepository.getAllPublicVideos();
     }
@@ -122,6 +116,27 @@ public class VideoService {
         } catch (MinioException | InvalidKeyException | IOException | NoSuchAlgorithmException e) {
             throw new RuntimeException("Failed to get video", e);
         }
+    }
+
+    public VideoResponse increaseNumberOfLikes(Integer videoId) {
+        Video video = findVideoById(videoId);
+        Users creator = userService.getUserById(video.getCreatorId());
+        video.setNumberOfLikes(video.getNumberOfLikes() + 1);
+        video = videoRepository.save(video);
+        return new VideoResponse(video, creator);
+    }
+
+    public VideoResponse decreaseNumberOfLikes(Integer videoId) {
+        Video video = findVideoById(videoId);
+        Users creator = userService.getUserById(video.getCreatorId());
+        if (video.getNumberOfLikes() == 0) {
+            throw new AppException(403, "IS_NOT_LIKE");
+        }
+        else {
+            video.setNumberOfLikes(video.getNumberOfLikes() - 1);
+            video = videoRepository.save(video);
+        }
+        return new VideoResponse(video, creator);
     }
 
     public List<VideoResponse> searchVideos(String query) {
