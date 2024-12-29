@@ -1,5 +1,6 @@
 package com.example.kotkit.dto.input;
 
+import com.example.kotkit.entity.enums.Gender;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,4 +22,6 @@ public class UpdateUserInfoInput {
 
     @NotNull
     private LocalDate birthday;
+
+    private Gender gender;
 }
