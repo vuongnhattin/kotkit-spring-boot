@@ -3,11 +3,13 @@ package com.example.kotkit.service;
 import com.example.kotkit.dto.input.VideoInput;
 import com.example.kotkit.dto.response.VideoResponse;
 import com.example.kotkit.entity.Like;
+import com.example.kotkit.entity.SavedVideo;
 import com.example.kotkit.entity.Users;
 import com.example.kotkit.entity.Video;
 import com.example.kotkit.entity.enums.VideoMode;
 import com.example.kotkit.exception.AppException;
 import com.example.kotkit.repository.LikeRepository;
+import com.example.kotkit.repository.SavedVideoRepository;
 import com.example.kotkit.repository.VideoRepository;
 import io.minio.GetObjectArgs;
 import io.minio.GetObjectResponse;
@@ -35,6 +37,7 @@ public class VideoService {
     private final FriendshipService friendshipService;
     private final MinioClient minioClient;
     private final MinioService minioService;
+    private final SavedVideoRepository savedVideoRepository;
 
     @Value("${minio.bucket}")
     private String bucketName;
@@ -123,7 +126,7 @@ public class VideoService {
     }
 
     @Transactional
-    public VideoResponse updateNumberOfLikes(Integer videoId) {
+    public VideoResponse updateLikeVideoState(Integer videoId) {
         Video video = findVideoById(videoId);
         Users user = userService.getMe();
         if (likeRepository.existsByVideoIdAndUserId(video.getVideoId(), user.getUserId())) {
@@ -142,9 +145,31 @@ public class VideoService {
         return new VideoResponse(video, creator);
     }
 
+    @Transactional
+    public VideoResponse updateSaveVideoState(Integer videoId) {
+        Video video = findVideoById(videoId);
+        Users user = userService.getMe();
+        if (savedVideoRepository.existsByVideoIdAndUserId(video.getVideoId(), user.getUserId())) {
+            savedVideoRepository.deleteByVideoIdAndUserId(video.getVideoId(), user.getUserId());
+        }
+        else {
+            SavedVideo savedVideo = new SavedVideo();
+            savedVideo.setVideoId(video.getVideoId());
+            savedVideo.setUserId(user.getUserId());
+            savedVideoRepository.save(savedVideo);
+        }
+        Users creator = userService.getUserById(video.getCreatorId());
+        return new VideoResponse(video, creator);
+    }
+
     public List<VideoResponse> getAllLikedVideos() {
         Users user = userService.getMe();
         return videoRepository.getAllLikedVideos(user.getUserId());
+    }
+
+    public List<VideoResponse> getAllSavedVideos() {
+        Users user = userService.getMe();
+        return videoRepository.getAllSavedVideos(user.getUserId());
     }
 
     public List<VideoResponse> searchVideos(String query) {
