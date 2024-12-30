@@ -25,10 +25,16 @@ public class VideoController {
     private final VideoService videoService;
     private final MinioService minioService;
 
-    @Operation(summary = "Get list of videos of a user")
+    @Operation(summary = "Get list of videos of a user (public and friend)")
     @GetMapping("videos-of-user")
-    public ApiResponse<List<VideoResponse>> getVideos(@RequestParam("userId") int userId, @RequestParam(defaultValue = "public") String mode) {
-        return new ApiResponse<>(videoService.getVideos(userId, mode));
+    public ApiResponse<List<VideoResponse>> getVideos(@RequestParam("userId") int userId, @RequestParam(defaultValue = "PUBLIC") String mode) {
+        return new ApiResponse<>(videoService.getVideosOfUser(userId, mode));
+    }
+
+    @Operation(summary = "Get all private videos of current user")
+    @GetMapping("private-videos-of-me")
+    public ApiResponse<List<VideoResponse>> getPrivateVideosOfMe() {
+        return new ApiResponse<>(videoService.getPrivateVideosOfMe());
     }
 
     @Operation(summary = "Upload video")
@@ -97,15 +103,15 @@ public class VideoController {
         return new ApiResponse<>(videoService.updateSaveVideoState(videoId));
     }
 
-    @Operation(summary = "Get list of all liked videos")
+    @Operation(summary = "Get list of all liked videos of current user")
     @GetMapping("liked")
     public ApiResponse<List<VideoResponse>> getAllLikedVideos() {
-        return new ApiResponse<>(videoService.getAllLikedVideos());
+        return new ApiResponse<>(videoService.getLikedVideosOfMe());
     }
 
-    @Operation(summary = "Get list of all saved videos")
-    @GetMapping("saved")
+    @Operation(summary = "Get list of all saved videos of current user")
+    @GetMapping("saved-videos-of-me")
     public ApiResponse<List<VideoResponse>> getAllSavedVideos() {
-        return new ApiResponse<>(videoService.getAllSavedVideos());
+        return new ApiResponse<>(videoService.getSavedVideosOfMe());
     }
 }

@@ -46,22 +46,21 @@ public class VideoService {
         return videoRepository.findById(videoId).orElseThrow(() -> new AppException(404, VIDEO_NOT_FOUND));
     }
 
-    public List<VideoResponse> getVideos(int creatorId, String mode) {
-        List<VideoResponse> videos;
-        if (mode.equals(VideoMode.PRIVATE.toString())) {
-            int meId = userService.getMeId();
-
-            if (meId == creatorId || friendshipService.isFriend(meId, creatorId)) {
-                videos = videoRepository.getPrivateVideos(creatorId);
-            } else {
-                throw new AppException(403, "IS_NOT_FRIEND");
+    public List<VideoResponse> getVideosOfUser(int creatorId, String mode) {
+        if (mode.equals(VideoMode.FRIEND.name())) {
+            if (creatorId != userService.getMeId() && !friendshipService.isFriend(creatorId, userService.getMeId())) {
+                throw new AppException(400, "NOT_FRIEND");
             }
-
-        } else {
-            videos = videoRepository.getPublicVideos(creatorId);
         }
+        if (mode.equals(VideoMode.PRIVATE.name()) && creatorId != userService.getMeId()) {
+            throw new AppException(400, "FORBIDDEN");
+        }
+        VideoMode videoMode = VideoMode.valueOf(mode);
+        return videoRepository.getVideosOfUser(creatorId, videoMode);
+    }
 
-        return videos;
+    public List<VideoResponse> getPrivateVideosOfMe() {
+        return videoRepository.getVideosOfUser(userService.getMeId(), VideoMode.valueOf("PRIVATE"));
     }
 
     public void increaseNumberOfComments(Integer videoId, Integer quantity){
@@ -162,14 +161,14 @@ public class VideoService {
         return new VideoResponse(video, creator);
     }
 
-    public List<VideoResponse> getAllLikedVideos() {
+    public List<VideoResponse> getLikedVideosOfMe() {
         Users user = userService.getMe();
-        return videoRepository.getAllLikedVideos(user.getUserId());
+        return videoRepository.getLikedVideosOfUser(user.getUserId());
     }
 
-    public List<VideoResponse> getAllSavedVideos() {
+    public List<VideoResponse> getSavedVideosOfMe() {
         Users user = userService.getMe();
-        return videoRepository.getAllSavedVideos(user.getUserId());
+        return videoRepository.getSavedVideosOfUser(user.getUserId());
     }
 
     public List<VideoResponse> searchVideos(String query) {
