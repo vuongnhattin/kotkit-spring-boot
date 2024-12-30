@@ -26,6 +26,10 @@ public class UserService {
         return userRepository.findByEmail(username).orElseThrow(() -> new AppException(404, USER_NOT_FOUND));
     }
 
+    public Users findUserById(int userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new AppException(404, USER_NOT_FOUND));
+    }
+
     public Users createUser(Users user) {
         return userRepository.save(user);
     }

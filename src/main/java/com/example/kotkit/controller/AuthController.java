@@ -1,5 +1,6 @@
 package com.example.kotkit.controller;
 
+import com.example.kotkit.dto.input.ChangePasswordInput;
 import com.example.kotkit.dto.input.LoginInput;
 import com.example.kotkit.dto.input.RegisterInput;
 import com.example.kotkit.dto.response.ApiResponse;
@@ -10,10 +11,7 @@ import com.example.kotkit.service.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("auth")
 @RestController
@@ -21,21 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final JwtService jwtService;
 
-    private final AuthService authenticationService;
+    private final AuthService authService;
 
     @Operation(summary = "Register a new user")
     @PostMapping("register")
     public ApiResponse<Void> register(@RequestBody @Valid RegisterInput registerUserDto) {
-        authenticationService.register(registerUserDto);
+        authService.register(registerUserDto);
         return new ApiResponse<>();
     }
 
-    // eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb25nQGVtYWlsIiwiaWF0IjoxNzM1MDkwNzEwLCJleHAiOjE3NDUwOTA3MTB9.jGaPOBKUqt3oQNj7CftHU8uAQhi6kLg7674mM_osuL0
-    // eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0YW5AZW1haWwiLCJpYXQiOjE3MzUwOTA4MTIsImV4cCI6MTc0NTA5MDgxMn0.MC92DsgZYElE42ZXCTvlnxTxGNDWqHZCyKqKdSYz-7s
     @Operation(summary = "Login to the system")
     @PostMapping("login")
     public ApiResponse<LoginResponse> login(@RequestBody @Valid LoginInput loginUserDto) {
-        Users authenticatedUser = authenticationService.login(loginUserDto);
+        Users authenticatedUser = authService.login(loginUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
@@ -45,5 +41,12 @@ public class AuthController {
                 .build();
 
         return new ApiResponse<>(response);
+    }
+
+    @Operation(summary = "Change password of current user")
+    @PutMapping("change-password")
+    public ApiResponse<Void> changePassword(@RequestBody @Valid ChangePasswordInput input) {
+        authService.changePassword(input.getOldPassword(), input.getNewPassword());
+        return new ApiResponse<>();
     }
 }
