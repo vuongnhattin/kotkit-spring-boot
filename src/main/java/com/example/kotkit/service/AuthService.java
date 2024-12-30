@@ -4,6 +4,7 @@ import com.example.kotkit.dto.input.LoginInput;
 import com.example.kotkit.dto.input.RegisterInput;
 import com.example.kotkit.entity.Users;
 import com.example.kotkit.exception.AppException;
+import com.example.kotkit.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,11 +16,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
     private final UserService userService;
-
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final AuthenticationManager authenticationManager;
-
     private final ModelMapper mapper;
 
     public void register(RegisterInput input) {
@@ -52,5 +51,16 @@ public class AuthService {
         } catch (Exception e) {
             throw new AppException(400, "WRONG_PASSWORD");
         }
+    }
+
+    public void changePassword(String oldPassword, String newPassword) {
+        Users user = userService.getMe();
+
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new AppException(400, "WRONG_PASSWORD");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 }
