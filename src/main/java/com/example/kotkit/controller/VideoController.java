@@ -84,4 +84,28 @@ public class VideoController {
     ) {
         return new ApiResponse<>(videoService.searchVideos(query));
     }
+
+    @Operation(summary = "Update like video state")
+    @PostMapping("{videoId}/like")
+    public ApiResponse<VideoResponse> updateLikeVideoState(@PathVariable Integer videoId) {
+        return new ApiResponse<>(videoService.updateLikeVideoState(videoId));
+    }
+
+    @Operation(summary = "Update save video state")
+    @PostMapping("{videoId}/save")
+    public ApiResponse<VideoResponse> updateSaveVideoState(@PathVariable Integer videoId) {
+        return new ApiResponse<>(videoService.updateSaveVideoState(videoId));
+    }
+
+    @Operation(summary = "Get list of all liked videos")
+    @GetMapping("liked")
+    public ApiResponse<List<VideoResponse>> getAllLikedVideos() {
+        return new ApiResponse<>(videoService.getAllLikedVideos());
+    }
+
+    @Operation(summary = "Get list of all saved videos")
+    @GetMapping("saved")
+    public ApiResponse<List<VideoResponse>> getAllSavedVideos() {
+        return new ApiResponse<>(videoService.getAllSavedVideos());
+    }
 }

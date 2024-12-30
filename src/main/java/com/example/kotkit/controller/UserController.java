@@ -10,6 +10,7 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -42,5 +43,11 @@ public class UserController {
     @PutMapping("me")
     public ApiResponse<Users> updateInfo(@RequestBody @Valid UpdateUserInfoInput input) {
         return new ApiResponse<>(userService.updateMe(input));
+    }
+
+    @Operation(summary = "Update avatar of current user")
+    @PutMapping("me/avatar")
+    public ApiResponse<Users> updateAvatar(@Valid MultipartFile avatar) {
+        return new ApiResponse<>(userService.updateAvatar(avatar));
     }
 }
