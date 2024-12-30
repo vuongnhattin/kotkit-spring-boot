@@ -84,4 +84,16 @@ public class VideoController {
     ) {
         return new ApiResponse<>(videoService.searchVideos(query));
     }
+
+    @Operation(summary = "Update number of Likes")
+    @PostMapping("{videoId}/like")
+    public ApiResponse<VideoResponse> updateNumberOfLikes(@PathVariable Integer videoId) {
+        return new ApiResponse<>(videoService.updateNumberOfLikes(videoId));
+    }
+
+    @Operation(summary = "Get list of all liked videos")
+    @GetMapping("liked")
+    public ApiResponse<List<VideoResponse>> getAllLikedVideos() {
+        return new ApiResponse<>(videoService.getAllLikedVideos());
+    }
 }

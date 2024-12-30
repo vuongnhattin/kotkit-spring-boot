@@ -74,4 +74,16 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
             """)
     // where v.creatorId = u.userId
     List<VideoResponse> getAllVideos();
+
+    @Query("""
+        select new com.example.kotkit.dto.response.VideoResponse(
+            v,
+            u
+        )
+        from Video v
+        join Like l on l.videoId = v.videoId
+        join Users u on u.userId = l.userId   
+        where l.userId = :userId
+        """)
+    List<VideoResponse> getAllLikedVideos(int userId);
 }
