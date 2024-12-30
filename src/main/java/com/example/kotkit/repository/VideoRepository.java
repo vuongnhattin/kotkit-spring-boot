@@ -2,6 +2,7 @@ package com.example.kotkit.repository;
 
 import com.example.kotkit.dto.response.VideoResponse;
 import com.example.kotkit.entity.Video;
+import com.example.kotkit.entity.enums.VideoMode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,6 +20,17 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
         and v.creatorId = u.userId
     """)
     List<VideoResponse> searchVideos(@Param("query") String query);
+
+    @Query("""
+            select new com.example.kotkit.dto.response.VideoResponse(
+                v, u
+            )
+            from Video v, Users u
+            where v.creatorId = u.userId
+            and u.userId = :creatorId
+            and v.mode = :mode
+            """)
+    List<VideoResponse> getVideosOfUser(@Param("creatorId") int creatorId, @Param("mode") VideoMode mode);
 
     // Cai nay Tin viet chua can dung toi
     @Query("""
@@ -85,7 +97,7 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
         join Users u on u.userId = l.userId   
         where l.userId = :userId
         """)
-    List<VideoResponse> getAllLikedVideos(int userId);
+    List<VideoResponse> getLikedVideosOfUser(int userId);
 
     @Query("""
         select new com.example.kotkit.dto.response.VideoResponse(
@@ -97,5 +109,5 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
         join Users u on u.userId = s.userId   
         where s.userId = :userId
         """)
-    List<VideoResponse> getAllSavedVideos(int userId);
+    List<VideoResponse> getSavedVideosOfUser(int userId);
 }
