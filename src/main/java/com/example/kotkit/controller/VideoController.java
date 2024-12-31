@@ -40,7 +40,7 @@ public class VideoController {
 
     @Operation(summary = "Upload video")
     @PostMapping("upload")
-    public ApiResponse<VideoResponse> uploadVideo(@Valid VideoInput videoInput) {
+    public ApiResponse<VideoResponse> uploadVideo(@Valid @ModelAttribute VideoInput videoInput) {
         return new ApiResponse<>(videoService.uploadVideo(videoInput));
     }
 
@@ -61,6 +61,12 @@ public class VideoController {
     @GetMapping("private-videos")
     public ApiResponse<List<VideoResponse>> getPrivateVideos() {
         return new ApiResponse<>(videoService.getAllPrivateVideos());
+    }
+
+    @Operation(summary = "Get list of all public and friend videos of friends")
+    @GetMapping("videos-of-friends")
+    public ApiResponse<List<VideoResponse>> getVideosOfFriends() {
+        return new ApiResponse<>(videoService.getVideosOfFriends());
     }
 
     @Operation(summary = "Get list of all videos - for testing")

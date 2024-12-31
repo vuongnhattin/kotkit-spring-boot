@@ -64,6 +64,10 @@ public class VideoService {
         return videoRepository.getVideosOfUser(userService.getMeId(), VideoMode.valueOf("PRIVATE"));
     }
 
+    public List<VideoResponse> getVideosOfFriends() {
+        return videoRepository.getVideosOfFriends(userService.getMeId());
+    }
+
     public void increaseNumberOfComments(Integer videoId, Integer quantity){
         if(quantity < 0) return;
         var video = videoRepository.findById(videoId)
@@ -83,6 +87,12 @@ public class VideoService {
     }
 
     public VideoResponse uploadVideo(VideoInput videoInput) {
+        if (videoInput.getVideo().isEmpty())
+            throw new AppException(400, "VIDEO_EMPTY");
+
+        if (videoInput.getThumbnail().isEmpty())
+            throw new AppException(400, "THUMBNAIL_EMPTY");
+
         Video video = new Video();
 
         video.setCreatorId(userService.getMeId());
@@ -93,6 +103,7 @@ public class VideoService {
 
         videoRepository.save(video);
         Users user = userService.getMe();
+        user.setNumberOfVideos(user.getNumberOfVideos() + 1);
 
         return new VideoResponse(video, user);
     }
