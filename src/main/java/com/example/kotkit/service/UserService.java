@@ -39,7 +39,7 @@ public class UserService {
         return (Users) authentication.getPrincipal();
     }
 
-    public Integer getMeId() {
+    public int getMeId() {
         return getMe().getUserId();
     }
 
