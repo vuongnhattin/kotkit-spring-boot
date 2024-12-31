@@ -62,6 +62,12 @@ public class VideoController {
         return new ApiResponse<>(videoService.getAllPrivateVideos());
     }
 
+    @Operation(summary = "Get list of all public and friend videos of friends")
+    @GetMapping("friend-videos-of-friends")
+    public ApiResponse<List<VideoResponse>> getVideosOfFriends() {
+        return new ApiResponse<>(videoService.getVideosOfFriends());
+    }
+
     @Operation(summary = "Get list of all videos - for testing")
     @GetMapping("all-videos")
     public ApiResponse<List<VideoResponse>> getAllVideos() {

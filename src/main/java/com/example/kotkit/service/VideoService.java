@@ -63,6 +63,10 @@ public class VideoService {
         return videoRepository.getVideosOfUser(userService.getMeId(), VideoMode.valueOf("PRIVATE"));
     }
 
+    public List<VideoResponse> getVideosOfFriends() {
+        return videoRepository.getVideosOfFriends(userService.getMeId());
+    }
+
     public void increaseNumberOfComments(Integer videoId, Integer quantity){
         if(quantity < 0) return;
         var video = videoRepository.findById(videoId)
