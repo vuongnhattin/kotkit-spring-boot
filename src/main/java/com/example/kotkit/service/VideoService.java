@@ -1,5 +1,6 @@
 package com.example.kotkit.service;
 
+import com.example.kotkit.dto.input.UpdateVideoInfoInput;
 import com.example.kotkit.dto.input.VideoInput;
 import com.example.kotkit.dto.response.VideoResponse;
 import com.example.kotkit.entity.Like;
@@ -184,5 +185,13 @@ public class VideoService {
 
     public List<VideoResponse> searchVideos(String query) {
         return videoRepository.searchVideos(query);
+    }
+
+    public Void updateVideoInfo(Integer videoId, UpdateVideoInfoInput updateVideoInfoInput) {
+        Video video = findVideoById(videoId);
+
+        videoRepository.updateVideoInfo(updateVideoInfoInput.getTitle(), updateVideoInfoInput.getMode(), videoId);
+
+        return null;
     }
 }
