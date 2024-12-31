@@ -75,6 +75,22 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
             """)
     List<VideoResponse> getAllPrivateVideos();
 
+    @Query("""
+        select new com.example.kotkit.dto.response.VideoResponse(
+            v, u
+        )
+        from Video v, Users u
+        where v.mode = 'FRIEND'
+        and v.creatorId = u.userId
+        and v.creatorId in (
+            select f.user2Id from Friendship f
+            where f.user1Id = :userId
+            and f.status = 'FRIEND'
+            or f.status = 'PUBLIC'
+        )
+""")
+    List<VideoResponse> getVideosOfFriends(@Param("userId") int userId);
+
     // Sau nay can sua
     @Query("""
             select new com.example.kotkit.dto.response.VideoResponse(
@@ -106,7 +122,7 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
         )
         from Video v
         join SavedVideo s on s.videoId = v.videoId
-        join Users u on u.userId = s.userId   
+        join Users u on u.userId = s.userId
         where s.userId = :userId
         """)
     List<VideoResponse> getSavedVideosOfUser(int userId);
