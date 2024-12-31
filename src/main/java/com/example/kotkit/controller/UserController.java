@@ -1,5 +1,6 @@
 package com.example.kotkit.controller;
 
+import com.example.kotkit.dto.input.UpdateAvatarInput;
 import com.example.kotkit.dto.input.UpdateUserInfoInput;
 import com.example.kotkit.dto.response.ApiResponse;
 import com.example.kotkit.dto.response.UserDetailsResponse;
@@ -8,6 +9,7 @@ import com.example.kotkit.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,7 +49,7 @@ public class UserController {
 
     @Operation(summary = "Update avatar of current user")
     @PutMapping("me/avatar")
-    public ApiResponse<Users> updateAvatar(@Valid MultipartFile avatar) {
-        return new ApiResponse<>(userService.updateAvatar(avatar));
+    public ApiResponse<Users> updateAvatar(@Valid @ModelAttribute UpdateAvatarInput input) {
+        return new ApiResponse<>(userService.updateAvatar(input));
     }
 }

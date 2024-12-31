@@ -1,5 +1,6 @@
 package com.example.kotkit.service;
 
+import com.example.kotkit.dto.input.UpdateAvatarInput;
 import com.example.kotkit.dto.input.UpdateUserInfoInput;
 import com.example.kotkit.dto.response.UserDetailsResponse;
 import com.example.kotkit.entity.Users;
@@ -85,9 +86,11 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Users updateAvatar(MultipartFile avatar) {
+    public Users updateAvatar(UpdateAvatarInput input) {
+        if (input.getAvatar().isEmpty())
+            throw new AppException(400, "AVATAR_EMPTY");
         Users user = getMe();
-        user.setAvatar(minioService.upload(avatar));
+        user.setAvatar(minioService.upload(input.getAvatar()));
         return userRepository.save(user);
     }
 }
