@@ -1,5 +1,6 @@
 package com.example.kotkit.controller;
 
+import com.example.kotkit.dto.input.UpdateVideoInfoInput;
 import com.example.kotkit.dto.input.VideoInput;
 import com.example.kotkit.dto.response.ApiResponse;
 import com.example.kotkit.dto.response.VideoDataResponse;
@@ -113,5 +114,14 @@ public class VideoController {
     @GetMapping("saved-videos-of-me")
     public ApiResponse<List<VideoResponse>> getAllSavedVideos() {
         return new ApiResponse<>(videoService.getSavedVideosOfMe());
+    }
+
+    @Operation(summary = "Update video (title, mode, delete)")
+    @PostMapping("{videoId}/update")
+    public ApiResponse<Void> UpdateVideoInfo(@PathVariable Integer videoId, @RequestBody UpdateVideoInfoInput updateVideoInfoInput) {
+        return new ApiResponse<>(videoService.updateVideoInfo(
+                videoId,
+                updateVideoInfoInput
+        ));
     }
 }

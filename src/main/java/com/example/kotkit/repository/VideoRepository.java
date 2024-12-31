@@ -3,7 +3,9 @@ package com.example.kotkit.repository;
 import com.example.kotkit.dto.response.VideoResponse;
 import com.example.kotkit.entity.Video;
 import com.example.kotkit.entity.enums.VideoMode;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -110,4 +112,15 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
         where s.userId = :userId
         """)
     List<VideoResponse> getSavedVideosOfUser(int userId);
+
+    @Transactional
+    @Modifying
+    @Query("""
+        update Video v
+        set v.title = :newTitle, v.mode = :newMode
+        where v.videoId = :videoId
+        """)
+    void updateVideoInfo(@Param("newTitle") String newTitle,
+                         @Param("newMode") VideoMode newMode,
+                         @Param("videoId") Integer videoId);
 }
