@@ -63,7 +63,7 @@ public class VideoController {
     }
 
     @Operation(summary = "Get list of all public and friend videos of friends")
-    @GetMapping("friend-videos-of-friends")
+    @GetMapping("videos-of-friends")
     public ApiResponse<List<VideoResponse>> getVideosOfFriends() {
         return new ApiResponse<>(videoService.getVideosOfFriends());
     }
