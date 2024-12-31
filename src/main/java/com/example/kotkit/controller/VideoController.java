@@ -39,7 +39,7 @@ public class VideoController {
 
     @Operation(summary = "Upload video")
     @PostMapping("upload")
-    public ApiResponse<VideoResponse> uploadVideo(@Valid VideoInput videoInput) {
+    public ApiResponse<VideoResponse> uploadVideo(@Valid @ModelAttribute VideoInput videoInput) {
         return new ApiResponse<>(videoService.uploadVideo(videoInput));
     }
 

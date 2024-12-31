@@ -100,7 +100,7 @@ public class MinioService {
             );
         } catch (Exception ex) {
             log.error("Error saving file \n {} ", ex.getMessage());
-            throw new AppException(500, "Unable to upload file");
+            throw new AppException(500, "SAVING_ERROR");
         }
 
         final var videoUrl = "/api/v1/buckets/kotkit/objects/download?prefix=%s&version_id=null".formatted(fileName);
